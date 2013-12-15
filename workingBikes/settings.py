@@ -23,7 +23,7 @@ SECRET_KEY = '17=$bz2%+)a1jj!7bsdo=#$@c!o5@!(pfx659h(4!^w-0dpxmu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 TEMPLATE_DIRS = (
 	BASE_DIR + '/templates',
@@ -33,7 +33,7 @@ LOGIN_REDIRECT_URL = '/volunteer/profile/'
 LOGIN_URL = '/volunteer/login/'
 LOGOUT_URL = '/volunteer/logout/'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost',]
 
 # Application definition
 
