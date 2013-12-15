@@ -89,7 +89,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 if socket.gethostname() == 'danehillard':
-	DEBUG = True
+	DEBUG = False
 	ALLOWED_HOSTS = ['workingbikes.danehillard.com']
 else:
 	import mimetypes
