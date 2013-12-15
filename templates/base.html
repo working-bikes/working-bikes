@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		{% block css %}{% endblock css %}
+		{% block js %}{% endblock js %}
+		{% block meta %}{% endblock meta %}
+		<title>{% block title %}Working Bikes{% endblock title %}</title>
+		<meta name="description" content="{% block description %}{% endblock description %}"/>
+	</head>
+	<body>
+	{% block content %}
+	{% endblock content %}
+	</body>
+</html>

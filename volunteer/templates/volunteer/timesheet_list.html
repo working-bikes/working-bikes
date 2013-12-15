@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Timesheets | {{ block.super }}{% endblock title %}
+{% block content %}
+	<table>
+	{% for timesheet in timesheet_list %}
+		<tr id="timesheet-day">
+			<td>
+				<a href="{% url 'volunteer:timesheet' timesheet.id %}">{{ timesheet.day }}</a>
+			</td>
+		</tr>
+		<tr id="timesheet-hours"><td>{{ timesheet.hours }}</td></tr>
+		<tr id="timesheet-note"><td>{{ timesheet.notes }}</td></tr>
+		<tr id="timesheet-delete"><td><a href="{% url 'volunteer:timesheet_delete' timesheet.id %}">Delete</a>
+	{% endfor %}
+	</table>
+	<a href="{% url 'volunteer:profile' %}">Profile</a>
+	<a href="{% url 'volunteer:timesheet_add' %}">Add a Timesheet</a>
+{% endblock content %}

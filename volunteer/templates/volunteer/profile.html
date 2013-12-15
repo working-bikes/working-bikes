@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}{{ user.first_name }} | {{ block.super }}{% endblock title %}
+{% block content %}
+<table id="volunteer-info">
+	<tr id="volunteer-name">
+		<td>{{ user.first_name }} {{ user.last_name }}</td>
+	</tr>
+	<tr id="volunteer-street-address">
+		<td>{{ volunteer.street_address }}</td>
+	</tr>
+	<tr id="volunteer-address">
+		<td>{{ volunteer.city }}, {{ volunteer.state }} {{ volunteer.zip_code }}</td>
+	</tr>
+</table>
+<a href="{% url 'volunteer:timesheets' %}">Timesheets</a>
+<a href="{% url 'volunteer:timesheet_add' %}">Add a Timesheet</a>
+<a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">Log Out</a>
+{% endblock content %}
