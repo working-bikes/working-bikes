@@ -24,7 +24,3 @@ class TimesheetCreateForm(forms.ModelForm):
 	class Meta:
 		model = Timesheet
 		exclude = ['user',]
-
-		widgets = {
-			'hours': forms.NumberInput(attrs={'min': '0.25', 'step': '0.25',}),
-		}

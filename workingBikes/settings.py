@@ -87,3 +87,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+if socket.gethostname() == 'danehillard':
+	DEBUG = True
+	ALLOWED_HOSTS = ['workingbikes.danehillard.com']
+else:
+	import mimetypes
+
+	mimetypes.add_type("image/svg+xml", ".svg", True)
+	mimetypes.add_type("image/svg+xml", ".svgz", True)
