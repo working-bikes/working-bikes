@@ -63,7 +63,8 @@ class TimesheetCreateView(CreateView):
 			obj.save()
 			return HttpResponseRedirect(reverse('volunteer:timesheets'))
 		except IntegrityError:
-			return render(self.request, self.template_name, {'form': form, 'timesheet_exists': True})
+			existingTimesheet = Timesheet.objects.get(user=self.request.user, day=form.cleaned_data['day'])
+			return render(self.request, self.template_name, {'form': form, 'timesheet_exists': True, 'existingTimesheet': existingTimesheet})
 
 class TimesheetUpdateView(UpdateView):
 	form_class = TimesheetCreateForm

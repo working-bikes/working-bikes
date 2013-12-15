@@ -2,7 +2,11 @@
 {% block title %}Timesheet Info | {{ block.super }}{% endblock title %}
 {% block content %}
 {% if timesheet_exists %}
-<p>There is already a timesheet for the specified day.</p>
+<p>
+	There is already a timesheet for the specified day. 
+	<a href="{% url 'volunteer:timesheet' existingTimesheet.id %}">Edit</a>
+	<a href="{% url 'volunteer:timesheet_delete' existingTimesheet.id %}">Delete</a>
+</p>
 {% endif %}
 <form action="" method="post">{% csrf_token %}
 	<table>
