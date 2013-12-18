@@ -5,4 +5,5 @@
     <p>Are you sure you want to delete timesheet for [{{ object.day }}]?</p>
     <input type="submit" value="Confirm" />
 </form>
+<a href="{% url 'volunteer:timesheets' %}">Cancel</a>
 {% endblock content %}

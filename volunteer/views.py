@@ -1,3 +1,6 @@
+import time
+from datetime import date
+
 from django.shortcuts import render
 from django.views.generic import TemplateView, DetailView, ListView, CreateView, UpdateView, DeleteView
 from django.http import HttpResponse, HttpResponseRedirect
@@ -55,6 +58,9 @@ class TimesheetListView(ListView):
 class TimesheetCreateView(CreateView):
 	form_class = TimesheetCreateForm
 	template_name = 'volunteer/timesheet_form.html'
+
+	def get_initial(self):
+		return {'day': date.fromtimestamp(time.time())}
 
 	def form_valid(self, form):
 		try:
