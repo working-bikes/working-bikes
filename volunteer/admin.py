@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
-from volunteer.models import Volunteer, Timesheet, TimesheetApproval
+from volunteer.models import Volunteer, Timesheet, TimesheetApproval, VolunteerTask
 
 admin.site.unregister(User)
 
@@ -24,8 +24,13 @@ class TimesheetAdmin(admin.ModelAdmin):
 		TimesheetApprovalInline,
 	]
 
-	list_display = ('user', 'day', 'approved',)
+	list_display = ('user', 'day', 'hours', 'approved',)
 	list_filter = ('user',)
+
+class VolunteerTaskAdmin(admin.ModelAdmin):
+	model = VolunteerTask
+	list_display = ('title', 'description',)
 
 admin.site.register(User, VolunteerAdmin)
 admin.site.register(Timesheet, TimesheetAdmin)
+admin.site.register(VolunteerTask, VolunteerTaskAdmin)
