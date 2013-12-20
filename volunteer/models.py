@@ -276,9 +276,9 @@ class Volunteer(models.Model):
 	state = models.CharField(max_length=10, choices=STATE_CHOICES)
 	zip_code = models.CharField(max_length=10)
 	country = models.CharField(max_length=50, choices=COUNTRY_CHOICES, default='United States')
-	emergency_contact = models.CharField(max_length=50)
-	emergency_contact_phone = models.CharField(max_length=15)
-	preferred_tasks = models.ManyToManyField(VolunteerTask)
+	emergency_contact = models.CharField(max_length=50, null=True, blank=True)
+	emergency_contact_phone = models.CharField(max_length=15, null=True, blank=True)
+	preferred_tasks = models.ManyToManyField(VolunteerTask, null=True, blank=True)
 	type = models.CharField(max_length=50, choices=VOLUNTEER_TYPE_CHOICES, default='Volunteer')
 	
 	def __unicode__(self):
