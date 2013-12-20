@@ -282,7 +282,7 @@ class Volunteer(models.Model):
 	type = models.CharField(max_length=50, choices=VOLUNTEER_TYPE_CHOICES, default='Volunteer')
 	
 	def __unicode__(self):
-		return '%s %s' % (user.first_name, user.last_name)
+		return '%s %s' % (self.user.first_name, self.user.last_name)
 
 class Timesheet(models.Model):
 	user = models.ForeignKey(User)
