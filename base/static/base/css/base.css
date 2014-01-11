@@ -1,7 +1,6 @@
 body
 {
 	font-family: 'Karla', sans-serif;
-	font-weight: bold;
 	line-height: 150%;
 }
 
@@ -20,6 +19,7 @@ table
 table th
 {
 	text-align: right;
+	font-weight: bold;
 }
 
 table tr
