@@ -53,5 +53,6 @@ hr
 
 input, textarea
 {
+	padding: 5px;
 	border: 1px solid gray;
 }
