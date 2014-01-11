@@ -5,6 +5,9 @@
 	<table>
 	{{ userform.as_table }}
     {{ volunteerform.as_table }}
+		<tr class="hidden-submit">
+			<td><input type="submit" value="Register" /></td>
+		</tr>
 	</table>
 </form>
 <a href="#" onclick="document.getElementById('registration-form').submit()">register</a>

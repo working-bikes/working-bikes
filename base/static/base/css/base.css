@@ -13,6 +13,7 @@ div#content
 
 table
 {
+	max-width: 250px;
 	margin: 0px auto;
 }
 
@@ -55,4 +56,10 @@ input, textarea
 {
 	padding: 5px;
 	border: 1px solid gray;
+}
+
+.hidden-submit
+{
+	visibility: hidden;
+	height: 0px;
 }
