@@ -50,3 +50,8 @@ hr
 {
 	width: 30%;
 }
+
+input, textarea
+{
+	border: 1px solid gray;
+}
