@@ -51,6 +51,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+	'south',
 	'base',
 	'volunteer',
 )
@@ -73,8 +74,12 @@ WSGI_APPLICATION = 'workingBikes.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'database.db'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'working_bikes',
+		'USER': 'working_bikes',
+		'PASSWORD': 'w0rk1ngb1k35',
+		'HOST': '127.0.0.1',
+		'PORT': '',
     }
 }
 

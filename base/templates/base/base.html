@@ -3,6 +3,7 @@
 	<head>
 		{% block css %}
 		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/base/css/base.css"/>
+		<link href="http://fonts.googleapis.com/css?family=Karla:400,200" rel="stylesheet" type="text/css">
 		{% endblock css %}
 		{% block js %}{% endblock js %}
 		{% block meta %}{% endblock meta %}
@@ -10,7 +11,12 @@
 		<meta name="description" content="{% block description %}{% endblock description %}"/>
 	</head>
 	<body>
-	{% block content %}
-	{% endblock content %}
+		<div id="content">
+			<div id="working-bikes-banner">
+				<img id="working-bikes-logo" src="http://www.workingbikes.org/wp-content/themes/workingbikes/images/working_bikes_logo.png" alt="Working Bikes Banner" />
+			</div>
+		{% block content %}
+		{% endblock content %}
+		</div>
 	</body>
 </html>

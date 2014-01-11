@@ -1,9 +1,9 @@
 {% extends 'base/base.html' %}
 {% block title %}Delete Timesheet | {{ block.super }}{% endblock title %}
 {% block content %}
-<form action="" method="post">{% csrf_token %}
+<form id="timesheet-delete-form" action="" method="post">{% csrf_token %}
     <p>Are you sure you want to delete timesheet for [{{ object.day }}]?</p>
-    <input type="submit" value="Confirm" />
 </form>
-<a href="{% url 'volunteer:timesheets' %}">Cancel</a>
+<a href="#" onclick="document.getElementById('timesheet-delete-form').submit()">confirm</a> 
+<a href="{% url 'volunteer:timesheets' %}">cancel</a>
 {% endblock content %}

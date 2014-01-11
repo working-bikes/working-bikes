@@ -1,7 +1,46 @@
 body
 {
+	font-family: 'Karla', sans-serif;
+	font-weight: bold;
+	line-height: 150%;
+}
+
+div#content
+{
+	width: 80%;
+	margin: 0px auto;
+	text-align: center;
+}
+
+table
+{
+	margin: 0px auto;
+}
+
+table th
+{
+	text-align: right;
+}
+
+table tr
+{
+	text-align: left;
+}
+
+a
+{
+	text-decoration: none;
 	color: #B66E48;
 	background: #F5F5F5;
-	font-family: sans-serif;
-	font-weight: bold;
+	padding: 5px;
+}
+
+a:hover
+{
+	color: #000000;
+}
+
+div#working-bikes-banner
+{
+	margin: 0px auto;
 }

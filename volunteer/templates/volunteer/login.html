@@ -7,9 +7,9 @@
 		{{ form.as_table }}
 		<tr>
 			<td></td>
-			<td><input type="submit" value="Log In" /></td>
 		</tr>
 	</table>
 </form>
-<a href="{% url 'volunteer:registration' %}">Register</a>
+<a href="#" onclick="document.getElementById('login-form').submit()">login</a>
+<a href="{% url 'volunteer:registration' %}">register</a>
 {% endblock content %}

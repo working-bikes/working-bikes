@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login
 from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 from django.db.models import Q
+from django.db.models import Sum
 
 from volunteer.models import Volunteer, Timesheet
 from volunteer.forms import UserForm, VolunteerForm, TimesheetCreateForm
@@ -49,11 +50,16 @@ class VolunteerProfileView(DetailView):
 	def get_object(self):
 		return get_object_or_404(Volunteer, user=self.request.user)
 
+	def get_context_data(self, **kwargs):
+		context = super(VolunteerProfileView, self).get_context_data(**kwargs)
+		context['totalHours'] = Volunteer.objects.get(user=self.request.user).timesheet_set.aggregate(Sum('hours')).get('hours__sum', 0.00)
+		return context
+
 class TimesheetListView(ListView):
 	template_name = 'volunteer/timesheet_list.html'
 
 	def get_queryset(self):
-		return Timesheet.objects.filter(user=self.request.user).order_by('-day')
+		return Timesheet.objects.filter(volunteer=Volunteer.objects.get(user=self.request.user)).order_by('-day')
 
 class TimesheetCreateView(CreateView):
 	form_class = TimesheetCreateForm
@@ -65,11 +71,11 @@ class TimesheetCreateView(CreateView):
 	def form_valid(self, form):
 		try:
 			obj = form.save(commit=False)
-			obj.user = self.request.user
+			obj.volunteer = Volunteer.objects.get(user=self.request.user)
 			obj.save()
 			return HttpResponseRedirect(reverse('volunteer:timesheets'))
 		except IntegrityError:
-			existingTimesheet = Timesheet.objects.get(user=self.request.user, day=form.cleaned_data['day'])
+			existingTimesheet = Timesheet.objects.get(volunteer=Volunteer.objects.get(user=self.request.user), day=form.cleaned_data['day'])
 			return render(self.request, self.template_name, {'form': form, 'timesheet_exists': True, 'existingTimesheet': existingTimesheet})
 
 class TimesheetUpdateView(UpdateView):
@@ -80,7 +86,7 @@ class TimesheetUpdateView(UpdateView):
 		return reverse('volunteer:timesheets')
 
 	def get_object(self):
-		return get_object_or_404(Timesheet, pk=self.kwargs['timesheet_id'], user=self.request.user)
+		return get_object_or_404(Timesheet, pk=self.kwargs['timesheet_id'])
 
 class TimesheetDeleteView(DeleteView):
 	model = Timesheet
@@ -89,4 +95,4 @@ class TimesheetDeleteView(DeleteView):
 		return reverse('volunteer:timesheets')
 
 	def get_object(self):
-		return get_object_or_404(Timesheet, pk=self.kwargs['timesheet_id'], user=self.request.user)
+		return get_object_or_404(Timesheet, pk=self.kwargs['timesheet_id'])

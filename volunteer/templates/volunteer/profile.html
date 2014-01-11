@@ -18,8 +18,12 @@
 		<th><label for="user-phone">Phone:</label></th>
 		<td id="user-phone">{{ volunteer.phone_number }}</td>
 	</tr>
+	<tr>
+		<th><label for="user-total-hours">Total Hours:</label></th>
+		<td id="user-total-hours">{{ totalHours }}</td>
+	</tr>
 </table>
-<a href="{% url 'volunteer:timesheets' %}">Timesheets</a>
-<a href="{% url 'volunteer:timesheet_add' %}">Add a Timesheet</a>
-<a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">Log Out</a>
+<a href="{% url 'volunteer:timesheets' %}">timesheets</a>
+<a href="{% url 'volunteer:timesheet_add' %}">add timesheet</a>
+<a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
 {% endblock content %}

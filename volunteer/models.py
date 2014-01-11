@@ -286,13 +286,13 @@ class Volunteer(models.Model):
 		return '%s %s' % (self.user.first_name, self.user.last_name)
 
 class Timesheet(models.Model):
-	user = models.ForeignKey(User)
+	volunteer = models.ForeignKey(Volunteer)
 	day = models.DateField()
 	hours = models.DecimalField(max_digits=4, decimal_places=2)
 	notes = models.TextField()
 
 	class Meta:
-		unique_together = ('user', 'day',)
+		unique_together = ('volunteer', 'day',)
 
 	def approved(self):
 		try:

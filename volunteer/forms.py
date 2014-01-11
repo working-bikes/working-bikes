@@ -23,4 +23,4 @@ class VolunteerForm(forms.ModelForm):
 class TimesheetCreateForm(forms.ModelForm):
 	class Meta:
 		model = Timesheet
-		exclude = ['user',]
+		exclude = ['volunteer',]

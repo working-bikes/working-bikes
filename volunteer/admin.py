@@ -24,8 +24,8 @@ class TimesheetAdmin(admin.ModelAdmin):
 		TimesheetApprovalInline,
 	]
 
-	list_display = ('user', 'day', 'hours', 'approved',)
-	list_filter = ('user',)
+	list_display = ('volunteer', 'day', 'hours', 'approved',)
+	list_filter = ('volunteer',)
 
 class VolunteerTaskAdmin(admin.ModelAdmin):
 	model = VolunteerTask
