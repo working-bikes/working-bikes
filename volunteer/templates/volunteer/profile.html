@@ -22,6 +22,10 @@
 		<th><label for="user-total-hours">Total Hours:</label></th>
 		<td id="user-total-hours">{{ totalHours }}</td>
 	</tr>
+	<tr>
+		<th><label for="user-points">Points:</label></th>
+		<td id="user-points">{{ points}}</td>
+	</tr>
 </table>
 <a href="{% url 'volunteer:timesheets' %}">timesheets</a>
 <a href="{% url 'volunteer:timesheet_add' %}">add timesheet</a>

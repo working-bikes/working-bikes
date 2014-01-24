@@ -1,4 +1,7 @@
+import datetime
+
 from django.db import models
+from django.db.models import Sum
 from django.contrib.auth.models import User
 
 class VolunteerTask(models.Model):
@@ -264,8 +267,9 @@ class Volunteer(models.Model):
 
 	VOLUNTEER_TYPE_CHOICES = (
 		('Volunteer', 'Volunteer'),
-		('Board Member', 'Board Member'),
+		('Service Hours', 'Service Hours'),
 		('Staff', 'Staff'),
+		('Board Member', 'Board Member'),
 		('Drop-off Site Host', 'Drop-off Site Host'),
 	)
 
@@ -282,12 +286,23 @@ class Volunteer(models.Model):
 	skills = models.TextField(null=True, blank=True)
 	type = models.CharField(max_length=50, choices=VOLUNTEER_TYPE_CHOICES, default='Volunteer')
 	
+	def points(self):
+		hourSum = self.timesheet_set.aggregate(Sum('hours')).get('hours__sum', 0)
+		purchaseSum = self.purchase_set.aggregate(Sum('points')).get('points__sum', 0)
+		
+		if purchaseSum is None:
+			purchaseSum = 0
+		if hourSum is None:
+			hourSum = 0
+
+		return int(hourSum) * 2 - purchaseSum
+	
 	def __unicode__(self):
-		return '%s %s' % (self.user.first_name, self.user.last_name)
+		return '{0} {1}'.format(self.user.first_name, self.user.last_name)
 
 class Timesheet(models.Model):
 	volunteer = models.ForeignKey(Volunteer)
-	day = models.DateField()
+	day = models.DateField(default=datetime.date.today)
 	hours = models.DecimalField(max_digits=4, decimal_places=2)
 	notes = models.TextField()
 
@@ -317,9 +332,15 @@ class TimesheetApproval(models.Model):
 class Event(models.Model):
 	title = models.CharField(max_length=50)
 	description = models.TextField()
+	hours = models.IntegerField()
 
 class EventTask(models.Model):
 	task = models.ForeignKey(VolunteerTask)
 	event = models.ForeignKey(Event)
 	volunteers = models.ManyToManyField(Volunteer)
 
+class Purchase(models.Model):
+	volunteer = models.ForeignKey(Volunteer)
+	date = models.DateField(default=datetime.date.today)
+	points = models.IntegerField()
+	description = models.TextField()

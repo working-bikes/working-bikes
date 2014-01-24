@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
-from volunteer.models import Volunteer, Timesheet, TimesheetApproval, VolunteerTask
+from volunteer.models import Volunteer, Timesheet, TimesheetApproval, VolunteerTask, Purchase
 
 admin.site.unregister(User)
 
@@ -34,3 +34,4 @@ class VolunteerTaskAdmin(admin.ModelAdmin):
 admin.site.register(User, VolunteerAdmin)
 admin.site.register(Timesheet, TimesheetAdmin)
 admin.site.register(VolunteerTask, VolunteerTaskAdmin)
+admin.site.register(Purchase)

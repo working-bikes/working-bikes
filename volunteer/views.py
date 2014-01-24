@@ -10,9 +10,10 @@ from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 from django.db.models import Q
 from django.db.models import Sum
+from django.contrib.admin.views.decorators import staff_member_required
 
-from volunteer.models import Volunteer, Timesheet
-from volunteer.forms import UserForm, VolunteerForm, TimesheetCreateForm
+from volunteer.models import Volunteer, Timesheet, Purchase
+from volunteer.forms import UserForm, VolunteerForm, TimesheetCreateForm, PurchaseCreateForm
 
 class VolunteerRegistrationView(TemplateView):
 	template_name = 'volunteer/registration.html'
@@ -52,8 +53,45 @@ class VolunteerProfileView(DetailView):
 
 	def get_context_data(self, **kwargs):
 		context = super(VolunteerProfileView, self).get_context_data(**kwargs)
-		context['totalHours'] = Volunteer.objects.get(user=self.request.user).timesheet_set.aggregate(Sum('hours')).get('hours__sum', 0.00)
+		volunteer = Volunteer.objects.get(user=self.request.user)
+		totalHours = volunteer.timesheet_set.aggregate(Sum('hours')).get('hours__sum', 0.0)
+		if totalHours is None:
+			totalHours = 0.0
+		context['totalHours'] = totalHours
+		context['points'] = volunteer.points()
 		return context
+
+class PurchaseListView(ListView):
+	template_name = 'volunteer/purchase_list.html'
+
+	def get_queryset(self):
+		return Purchase.objects.filter(volunteer=Volunteer.objects.get(user=self.request.user)).order_by('-date')
+
+class PurchaseCreateView(CreateView):
+	form_class = PurchaseCreateForm
+	template_name = 'volunteer/purchase_form.html'
+
+	def get_success_url(self):
+		return reverse('volunteer:purchases')
+
+class PurchaseUpdateView(UpdateView):
+	form_class = PurchaseCreateForm
+	template_name = 'volunteer/purchase_form.html'
+
+	def get_success_url(self):
+		return reverse('volunteer:purchases')
+
+	def get_object(self):
+		return get_object_or_404(Purchase, pk=self.kwargs['purchase_id'])
+
+class PurchaseDeleteView(DeleteView):
+	model = Timesheet
+
+	def get_success_url(self):
+		return reverse('volunteer:purchases')
+
+	def get_object(self):
+		return get_object_or_404(Purchase, pk=self.kwargs['purchase_id'])
 
 class TimesheetListView(ListView):
 	template_name = 'volunteer/timesheet_list.html'
@@ -64,9 +102,6 @@ class TimesheetListView(ListView):
 class TimesheetCreateView(CreateView):
 	form_class = TimesheetCreateForm
 	template_name = 'volunteer/timesheet_form.html'
-
-	def get_initial(self):
-		return {'day': date.fromtimestamp(time.time())}
 
 	def form_valid(self, form):
 		try:

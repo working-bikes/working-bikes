@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+{% block title %}Purchases | {{ block.super }}{% endblock title %}
+{% block content %}
+	<a href="{% url 'volunteer:profile' %}">profile</a>
+	<a href="{% url 'volunteer:purchase_add' %}">add purchase</a>
+	<a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
+	<hr />
+	{% for purchase in purchase_list %}
+	<table>
+		<tr id="purchase-date">
+			<th><label for="purchase-date">Date:</label></th>
+			<td id="purchase-date">
+				<a href="{% url 'volunteer:purchase' purchase.id %}">{{ purchase.date }}</a>
+			</td>
+		</tr>
+		<tr id="purchase-points">
+			<th><label for="purchase-points">Points:</label></th>
+			<td>{{ purchase.points }}</td>
+		</tr>
+		<tr id="purchase-description">
+			<th><label for="purchase-description">Description:</label></th>
+			<td>{{ purchase.description }}</td>
+		</tr>
+		<tr id="purchase-delete">
+			<th><label for="purchase-delete"></label></th>
+			<td><a href="{% url 'volunteer:purchase_delete' purchase.id %}">delete</a></td>
+		</tr>
+	</table>
+	<hr />
+	{% endfor %}
+	<a href="{% url 'volunteer:profile' %}">profile</a>
+	<a href="{% url 'volunteer:purchase_add' %}">add purchase</a>
+	<a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
+{% endblock content %}
