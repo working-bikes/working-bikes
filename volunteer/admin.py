@@ -15,6 +15,8 @@ from volunteer.forms import TimesheetCreateForm
 class VolunteerAdmin(admin.ModelAdmin):
 	model = Volunteer
 
+	list_display = ('name', 'type', 'is_member',)
+
 	actions = ['add_event',]
 
 	class AddEventForm(forms.Form):
@@ -49,8 +51,9 @@ class VolunteerAdmin(admin.ModelAdmin):
 			form = self.AddEventForm(initial={'day': datetime.date.today, '_selected_action': request.POST.getlist(admin.ACTION_CHECKBOX_NAME)})
 
 		return render_to_response('admin/add_event.html',
-								  {'volunteers': queryset,
-								   'event_form': form,
+								  {
+									'volunteers': queryset,
+									'event_form': form,
 								  },
 								  context_instance=RequestContext(request))
 

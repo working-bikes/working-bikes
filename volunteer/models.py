@@ -296,9 +296,37 @@ class Volunteer(models.Model):
 			hourSum = 0
 
 		return int(hourSum) * 2 - purchaseSum
+
+	def is_member(self):
+		if self.type in ['Drop-off Site Host', 'Board Member'] \
+		or (self.type == 'Staff' and self.membership_length_months() > 6) \
+		or (self.six_month_avg_hours() >= 4) \
+		or (self.total_hours_since_num_days(365) >= 48):
+			return True
+		else:
+			return False
+	is_member.boolean = True
+	is_member.short_description = 'Member?'
+
+	def membership_length_months(self):
+		return (datetime.datetime.now() - self.user.date_joined.replace(tzinfo=None)).total_seconds() / 60.0 / 60 / 24 / 30
+
+	def total_hours_since_num_days(self, num_days):
+		timesheets = self.timesheet_set.filter(day__gt=datetime.date.today() - datetime.timedelta(days=num_days))
+		total = 0
+		for timesheet in timesheets:
+			if timesheet.approved():
+				total += timesheet.hours
+		return total
+
+	def six_month_avg_hours(self):
+		return self.total_hours_since_num_days(180) / 6
+
+	def name(self):
+		return '{0} {1}'.format(self.user.first_name, self.user.last_name)
 	
 	def __unicode__(self):
-		return '{0} {1}'.format(self.user.first_name, self.user.last_name)
+		return self.name()
 
 class Timesheet(models.Model):
 	volunteer = models.ForeignKey(Volunteer)
