@@ -2,7 +2,9 @@
 {% block title %}Purchases | {{ block.super }}{% endblock title %}
 {% block content %}
 	<a href="{% url 'volunteer:profile' %}">profile</a>
+	{% if perms.volunteer.add_purchase %}
 	<a href="{% url 'volunteer:purchase_add' %}">add purchase</a>
+	{% endif %}
 	<a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
 	<hr />
 	{% for purchase in purchase_list %}
@@ -10,7 +12,11 @@
 		<tr id="purchase-date">
 			<th><label for="purchase-date">Date:</label></th>
 			<td id="purchase-date">
+				{% if perms.volunteer.update_purchase %}
 				<a href="{% url 'volunteer:purchase' purchase.id %}">{{ purchase.date }}</a>
+				{% else %}
+				<span>{{ purchase.date }}</span>
+				{% endif %}
 			</td>
 		</tr>
 		<tr id="purchase-points">
@@ -21,14 +27,18 @@
 			<th><label for="purchase-description">Description:</label></th>
 			<td>{{ purchase.description }}</td>
 		</tr>
+		{% if perms.volunteer.delete_purchase %}
 		<tr id="purchase-delete">
 			<th><label for="purchase-delete"></label></th>
 			<td><a href="{% url 'volunteer:purchase_delete' purchase.id %}">delete</a></td>
 		</tr>
+		{% endif %}
 	</table>
 	<hr />
 	{% endfor %}
 	<a href="{% url 'volunteer:profile' %}">profile</a>
+	{% if perms.volunteer.add_purchase %}
 	<a href="{% url 'volunteer:purchase_add' %}">add purchase</a>
+	{% endif %}
 	<a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
 {% endblock content %}

@@ -24,10 +24,10 @@
 	</tr>
 	<tr>
 		<th><label for="user-points">Points:</label></th>
-		<td id="user-points">{{ points}}</td>
+		<td id="user-points">{{ points }}</td>
 	</tr>
 </table>
 <a href="{% url 'volunteer:timesheets' %}">timesheets</a>
-<a href="{% url 'volunteer:timesheet_add' %}">add timesheet</a>
+<a href="{% url 'volunteer:purchases' %}">purchases</a>
 <a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
 {% endblock content %}

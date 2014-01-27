@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.db import IntegrityError
 from django.db.models import Q
 from django.db.models import Sum
-from django.contrib.admin.views.decorators import staff_member_required
+from django.http import Http404
 
 from volunteer.models import Volunteer, Timesheet, Purchase
 from volunteer.forms import UserForm, VolunteerForm, TimesheetCreateForm, PurchaseCreateForm
@@ -71,12 +71,22 @@ class PurchaseCreateView(CreateView):
 	form_class = PurchaseCreateForm
 	template_name = 'volunteer/purchase_form.html'
 
+	def dispatch(self, request, *args, **kwargs):
+		if not self.request.user.has_perm('volunteer.add_purchase'):
+			raise Http404
+		return super(PurchaseCreateView, self).dispatch(request, *args, **kwargs)
+
 	def get_success_url(self):
 		return reverse('volunteer:purchases')
 
 class PurchaseUpdateView(UpdateView):
 	form_class = PurchaseCreateForm
 	template_name = 'volunteer/purchase_form.html'
+
+	def dispatch(self, request, *args, **kwargs):
+		if not self.request.user.has_perm('volunteer.update_purchase'):
+			raise Http404
+		return super(PurchaseUpdateView, self).dispatch(request, *args, **kwargs)
 
 	def get_success_url(self):
 		return reverse('volunteer:purchases')
@@ -86,6 +96,11 @@ class PurchaseUpdateView(UpdateView):
 
 class PurchaseDeleteView(DeleteView):
 	model = Timesheet
+
+	def dispatch(self, request, *args, **kwargs):
+		if not self.request.user.has_perm('volunteer.delete_purchase'):
+			raise Http404
+		return super(PurchaseDeleteView, self).dispatch(request, *args, **kwargs)
 
 	def get_success_url(self):
 		return reverse('volunteer:purchases')
@@ -107,11 +122,15 @@ class TimesheetCreateView(CreateView):
 		try:
 			obj = form.save(commit=False)
 			obj.volunteer = Volunteer.objects.get(user=self.request.user)
+			existingTimesheet = Timesheet.objects.get(volunteer=Volunteer.objects.get(user=self.request.user), day=obj.day, from_event=False)
+			if existingTimesheet.from_event:
+				obj.save()
+				return HttpResponseRedirect(reverse('volunteer:timesheets'))
+			else:
+				return render(self.request, self.template_name, {'form': form, 'timesheet_exists': True, 'existingTimesheet': existingTimesheet})
+		except Timesheet.DoesNotExist:
 			obj.save()
 			return HttpResponseRedirect(reverse('volunteer:timesheets'))
-		except IntegrityError:
-			existingTimesheet = Timesheet.objects.get(volunteer=Volunteer.objects.get(user=self.request.user), day=form.cleaned_data['day'])
-			return render(self.request, self.template_name, {'form': form, 'timesheet_exists': True, 'existingTimesheet': existingTimesheet})
 
 class TimesheetUpdateView(UpdateView):
 	form_class = TimesheetCreateForm
@@ -121,7 +140,13 @@ class TimesheetUpdateView(UpdateView):
 		return reverse('volunteer:timesheets')
 
 	def get_object(self):
-		return get_object_or_404(Timesheet, pk=self.kwargs['timesheet_id'])
+		try:
+			timesheet = Timesheet.objects.get(pk=self.kwargs['timesheet_id'])
+			if timesheet.approved():
+				raise Http404
+			return timesheet
+		except Timesheet.DoesNotExist:
+			raise Http404
 
 class TimesheetDeleteView(DeleteView):
 	model = Timesheet
@@ -130,4 +155,10 @@ class TimesheetDeleteView(DeleteView):
 		return reverse('volunteer:timesheets')
 
 	def get_object(self):
-		return get_object_or_404(Timesheet, pk=self.kwargs['timesheet_id'])
+		try:
+			timesheet = Timesheet.objects.get(pk=self.kwargs['timesheet_id'])
+			if timesheet.approved():
+				raise Http404
+			return timesheet
+		except Timesheet.DoesNotExist:
+			raise Http404

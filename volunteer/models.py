@@ -305,16 +305,15 @@ class Timesheet(models.Model):
 	day = models.DateField(default=datetime.date.today)
 	hours = models.DecimalField(max_digits=4, decimal_places=2)
 	notes = models.TextField()
-
-	class Meta:
-		unique_together = ('volunteer', 'day',)
+	from_event = models.BooleanField(default=False)
 
 	def approved(self):
 		try:
 			approval = TimesheetApproval.objects.get(timesheet=self)
-			return 'Approved'
+			return True
 		except TimesheetApproval.DoesNotExist:
-			return 'Awaiting Approval'
+			return False
+	approved.boolean = True
 
 	def __unicode__(self):
 		return str(self.day)

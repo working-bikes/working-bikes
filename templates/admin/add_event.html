@@ -1,0 +1,12 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+<form action="" method="post">{% csrf_token %}
+	<table>
+	{{ event_form.as_table }}
+	</table>
+	<p>This event will be added for the following volunteers:</p>
+	<ul>{{ volunteers|unordered_list }}</ul>
+	<input type="hidden" name="action" value="add_event" />
+	<input type="submit" name="apply" value="Add Event" />
+</form>
+{% endblock content %}

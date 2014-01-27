@@ -10,7 +10,11 @@
 		<tr id="timesheet-day">
 			<th><label for="timesheet-day">Day:</label></th>
 			<td id="timesheet-day">
+				{% if timesheet.approved %}
+				<span>{{ timesheet.day }}</span>
+				{% else %}
 				<a href="{% url 'volunteer:timesheet' timesheet.id %}">{{ timesheet.day }}</a>
+				{% endif %}
 			</td>
 		</tr>
 		<tr id="timesheet-hours">
@@ -23,7 +27,9 @@
 		</tr>
 		<tr id="timesheet-delete">
 			<th><label for="timesheet-delete"></label></th>
+			{% if not timesheet.approved %}
 			<td><a href="{% url 'volunteer:timesheet_delete' timesheet.id %}">delete</a></td>
+			{% endif %}
 		</tr>
 	</table>
 	<hr />
