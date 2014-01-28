@@ -20,13 +20,14 @@
 	</tr>
 	<tr>
 		<th><label for="user-total-hours">Total Hours:</label></th>
-		<td id="user-total-hours">{{ totalHours }}</td>
+		<td id="user-total-hours">{{ volunteer.hours }}</td>
 	</tr>
 	<tr>
 		<th><label for="user-points">Points:</label></th>
-		<td id="user-points">{{ points }}</td>
+		<td id="user-points">{{ volunteer.points }}</td>
 	</tr>
 </table>
+<hr/>
 <a href="{% url 'volunteer:timesheets' %}">timesheets</a>
 <a href="{% url 'volunteer:purchases' %}">purchases</a>
 <a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
