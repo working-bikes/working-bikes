@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Sum
 from django.contrib.auth.models import User
 
-class VolunteerTask(models.Model):
+class Task(models.Model):
 	title = models.CharField(max_length=50)
 	description = models.TextField()
 	members_only = models.BooleanField(default=False)
@@ -282,12 +282,18 @@ class Volunteer(models.Model):
 	country = models.CharField(max_length=50, choices=COUNTRY_CHOICES, default='United States')
 	emergency_contact = models.CharField(max_length=50, null=True, blank=True)
 	emergency_contact_phone = models.CharField(max_length=15, null=True, blank=True)
-	preferred_tasks = models.ManyToManyField(VolunteerTask, null=True, blank=True)
+	preferred_tasks = models.ManyToManyField(Task, null=True, blank=True)
 	skills = models.TextField(null=True, blank=True)
 	type = models.CharField(max_length=50, choices=VOLUNTEER_TYPE_CHOICES, default='Volunteer')
+
+	def hours(self):
+		totalHours = self.timesheet_set.aggregate(Sum('hours')).get('hours__sum', 0.0)
+		if totalHours is None:
+			totalHours = 0.0
+		return totalHours
 	
 	def points(self):
-		hourSum = self.timesheet_set.aggregate(Sum('hours')).get('hours__sum', 0)
+		hourSum = self.hours()
 		purchaseSum = self.purchase_set.aggregate(Sum('points')).get('points__sum', 0)
 		
 		if purchaseSum is None:
@@ -333,6 +339,7 @@ class Timesheet(models.Model):
 	day = models.DateField(default=datetime.date.today)
 	hours = models.DecimalField(max_digits=4, decimal_places=2)
 	notes = models.TextField()
+	task = models.ForeignKey(Task, blank=True, null=True)
 	from_event = models.BooleanField(default=False)
 
 	def approved(self):
@@ -355,16 +362,6 @@ class TimesheetApproval(models.Model):
 			return 'Approved by %s %s' % (self.approved_by.first_name, self.approved_by.last_name)
 		else:
 			return 'Approved by %s' % self.approved_by.username
-
-class Event(models.Model):
-	title = models.CharField(max_length=50)
-	description = models.TextField()
-	hours = models.IntegerField()
-
-class EventTask(models.Model):
-	task = models.ForeignKey(VolunteerTask)
-	event = models.ForeignKey(Event)
-	volunteers = models.ManyToManyField(Volunteer)
 
 class Purchase(models.Model):
 	volunteer = models.ForeignKey(Volunteer)
