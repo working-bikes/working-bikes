@@ -51,16 +51,6 @@ class VolunteerProfileView(DetailView):
 	def get_object(self):
 		return get_object_or_404(Volunteer, user=self.request.user)
 
-	def get_context_data(self, **kwargs):
-		context = super(VolunteerProfileView, self).get_context_data(**kwargs)
-		volunteer = Volunteer.objects.get(user=self.request.user)
-		totalHours = volunteer.timesheet_set.aggregate(Sum('hours')).get('hours__sum', 0.0)
-		if totalHours is None:
-			totalHours = 0.0
-		context['totalHours'] = totalHours
-		context['points'] = volunteer.points()
-		return context
-
 class PurchaseListView(ListView):
 	template_name = 'volunteer/purchase_list.html'
 
@@ -114,6 +104,13 @@ class TimesheetListView(ListView):
 	def get_queryset(self):
 		return Timesheet.objects.filter(volunteer=Volunteer.objects.get(user=self.request.user)).order_by('-day')
 
+class TimesheetDetailView(DetailView):
+	template_name = 'volunteer/timesheet_detail.html'
+	object_name = 'timesheet'
+
+	def get_object(self):
+		return get_object_or_404(Timesheet, volunteer=Volunteer.objects.get(user=self.request.user), pk=self.kwargs['timesheet_id'])
+
 class TimesheetCreateView(CreateView):
 	form_class = TimesheetCreateForm
 	template_name = 'volunteer/timesheet_form.html'
@@ -137,7 +134,7 @@ class TimesheetUpdateView(UpdateView):
 	template_name = 'volunteer/timesheet_form.html'
 
 	def get_success_url(self):
-		return reverse('volunteer:timesheets')
+		return reverse('volunteer:timesheet', args=(self.kwargs['timesheet_id'],))
 
 	def get_object(self):
 		try:
