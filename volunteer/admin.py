@@ -9,13 +9,13 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 
-from volunteer.models import Volunteer, Timesheet, TimesheetApproval, VolunteerTask, Purchase
+from volunteer.models import Volunteer, Timesheet, TimesheetApproval, Task, Purchase
 from volunteer.forms import TimesheetCreateForm
 
 class VolunteerAdmin(admin.ModelAdmin):
 	model = Volunteer
 
-	list_display = ('name', 'type', 'is_member',)
+	list_display = ('name', 'type', 'hours', 'points', 'is_member',)
 
 	actions = ['add_event',]
 
@@ -83,8 +83,8 @@ class TimesheetAdmin(admin.ModelAdmin):
 	approve.short_description = 'Approve selected timesheets'
 
 
-class VolunteerTaskAdmin(admin.ModelAdmin):
-	model = VolunteerTask
+class TaskAdmin(admin.ModelAdmin):
+	model = Task
 	list_display = ('title', 'description',)
 
 class PurchaseAdmin(admin.ModelAdmin):
@@ -94,5 +94,5 @@ class PurchaseAdmin(admin.ModelAdmin):
 
 admin.site.register(Volunteer, VolunteerAdmin)
 admin.site.register(Timesheet, TimesheetAdmin)
-admin.site.register(VolunteerTask, VolunteerTaskAdmin)
+admin.site.register(Task, TaskAdmin)
 admin.site.register(Purchase, PurchaseAdmin)
