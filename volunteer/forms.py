@@ -3,6 +3,7 @@ import re
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.utils.safestring import mark_safe
 
 from volunteer.models import Volunteer, Timesheet, Purchase, Task
 
@@ -37,16 +38,17 @@ class TaskForm(forms.ModelForm):
 	class Meta:
 		model = Task
 
-class TimesheetHoursInput(forms.Widget):
-	def render(self, name, value, attrs=None):
-		return '<input type="number" min="0.25" max="24" step="0.25" />'
+class HTML5Input(forms.widgets.Input):
+	def __init__(self, type, attrs):
+		self.input_type = type
+		super(HTML5Input, self).__init__(attrs)
 
 class TimesheetCreateForm(forms.ModelForm):
 	class Meta:
 		model = Timesheet
 		exclude = ['volunteer', 'from_event',]
 		widgets = {
-			'hours': TimesheetHoursInput(attrs={'min': 5, 'max': 10, 'step': 1})
+			'hours': HTML5Input(type='number', attrs={'min': 0.25, 'max': 24, 'step': 0.25})
 		}
 
 class PurchaseCreateForm(forms.ModelForm):
