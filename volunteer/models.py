@@ -61,10 +61,11 @@ class Volunteer(models.Model):
 		('Vermont', 'VT'),
 		('Virginia', 'VA'),
 		('Washington', 'WA'),
-		('Washington, D.C.', 'DC'),
 		('West Virginia', 'WV'),
 		('Wisconsin', 'WI'),
-		('Wyoming', 'WY')
+		('Wyoming', 'WY'),
+		('Washington, D.C.', 'Washington, D.C.'),
+		('Other', 'Other'),
 	)
 
 	COUNTRY_CHOICES = (
