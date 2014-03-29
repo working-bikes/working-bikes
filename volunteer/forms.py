@@ -48,7 +48,7 @@ class TimesheetCreateForm(forms.ModelForm):
 		model = Timesheet
 		exclude = ['volunteer', 'from_event',]
 		widgets = {
-			'hours': HTML5Input(type='number', attrs={'min': 0.25, 'max': 24, 'step': 0.25})
+			'hours': HTML5Input(type='number', attrs={'min': 0.25, 'step': 0.25})
 		}
 
 class PurchaseCreateForm(forms.ModelForm):
