@@ -290,11 +290,14 @@ class Volunteer(models.Model):
 
 	def hours(self):
 		totalHours = self.timesheet_set.aggregate(Sum('hours')).get('hours__sum', 0.0)
-		if totalHours is None or self.type == 'Service Hours':
+		if totalHours is None:
 			totalHours = 0
 		return totalHours
 	
 	def points(self):
+		if self.type == 'Service Hours':
+			return 0
+
 		hourSum = self.hours()
 		purchaseSum = self.purchase_set.aggregate(Sum('points')).get('points__sum', 0)
 		
