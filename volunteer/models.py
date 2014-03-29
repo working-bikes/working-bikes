@@ -290,7 +290,7 @@ class Volunteer(models.Model):
 
 	def hours(self):
 		totalHours = self.timesheet_set.aggregate(Sum('hours')).get('hours__sum', 0.0)
-		if totalHours is None:
+		if totalHours is None or self.type == 'Service Hours':
 			totalHours = 0
 		return totalHours
 	
@@ -346,7 +346,7 @@ class Timesheet(models.Model):
 
 	def approved(self):
 		try:
-			approval = TimesheetApproval.objects.get(timesheet=self)
+			TimesheetApproval.objects.get(timesheet=self)
 			return True
 		except TimesheetApproval.DoesNotExist:
 			return False
