@@ -279,7 +279,7 @@ class Volunteer(models.Model):
 	phone_number = models.CharField(max_length=15)
 	street_address = models.CharField(max_length=50)
 	city = models.CharField(max_length=50)
-	state = models.CharField(max_length=10, choices=STATE_CHOICES)
+	state = models.CharField(max_length=50, choices=STATE_CHOICES)
 	zip_code = models.CharField(max_length=10)
 	country = models.CharField(max_length=50, choices=COUNTRY_CHOICES, default='United States')
 	emergency_contact = models.CharField(max_length=50, null=True, blank=True)
@@ -339,7 +339,7 @@ class Volunteer(models.Model):
 class Timesheet(models.Model):
 	volunteer = models.ForeignKey(Volunteer)
 	day = models.DateField(default=datetime.date.today)
-	hours = models.DecimalField(max_digits=4, decimal_places=2)
+	hours = models.DecimalField(max_digits=5, decimal_places=2)
 	notes = models.TextField()
 	task = models.ForeignKey(Task, blank=True, null=True)
 	from_event = models.BooleanField(default=False)
