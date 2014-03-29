@@ -22,10 +22,12 @@
 		<th><label for="user-total-hours">Total Hours:</label></th>
 		<td id="user-total-hours">{{ volunteer.hours }}</td>
 	</tr>
+    {% if volunteer.type != 'Service Hours' %}
 	<tr>
 		<th><label for="user-points">Points:</label></th>
 		<td id="user-points">{{ volunteer.points }}</td>
 	</tr>
+    {% endif %}
 </table>
 <hr/>
 <a href="{% url 'volunteer:timesheets' %}">timesheets</a>
