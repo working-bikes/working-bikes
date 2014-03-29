@@ -68,3 +68,11 @@ input, textarea
 	visibility: hidden;
 	height: 0px;
 }
+
+.errorlist
+{
+    color: #ff0000;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
