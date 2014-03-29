@@ -27,6 +27,11 @@ table tr
 	text-align: left;
 }
 
+table td
+{
+    max-width: 300px;
+}
+
 a
 {
 	font-weight: bold;
