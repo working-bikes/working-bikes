@@ -13,17 +13,6 @@ import os
 import socket
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-if socket.gethostname() == 'danehillard':
-	DEBUG = False
-	ALLOWED_HOSTS = ['workingbikes.danehillard.com',]
-else:
-	import mimetypes
-	DEBUG = True
-	ALLOWED_HOSTS = ['localhost',]
-
-	mimetypes.add_type("image/svg+xml", ".svg", True)
-	mimetypes.add_type("image/svg+xml", ".svgz", True)
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
 
@@ -31,7 +20,7 @@ else:
 SECRET_KEY = '17=$bz2%+)a1jj!7bsdo=#$@c!o5@!(pfx659h(4!^w-0dpxmu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 TEMPLATE_DIRS = (
@@ -102,3 +91,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR + '/static'
+
+if socket.gethostname() == 'danehillard':
+	DEBUG = False
+	ALLOWED_HOSTS = ['workingbikes.danehillard.com',]
+	DATABASES['default']['HOST'] = 'production.csnsdgwkxnzo.us-east-1.rds.amazonaws.com'
+else:
+	import mimetypes
+	ALLOWED_HOSTS = ['localhost',]
+
+	mimetypes.add_type("image/svg+xml", ".svg", True)
+	mimetypes.add_type("image/svg+xml", ".svgz", True)
