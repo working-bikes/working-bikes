@@ -387,3 +387,6 @@ class Purchase(models.Model):
     date = models.DateField(default=datetime.date.today)
     points = models.IntegerField()
     description = models.TextField()
+
+    class Meta:
+        ordering = ['volunteer__user__first_name']
