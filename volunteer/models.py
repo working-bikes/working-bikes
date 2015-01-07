@@ -328,8 +328,9 @@ class Volunteer(models.Model):
     is_member.short_description = 'Member?'
 
     def membership_length_months(self):
-        return (datetime.datetime.now() - self.user.date_joined.replace(
-            tzinfo=None)).total_seconds() / 60.0 / 60 / 24 / 30
+        delta = datetime.datetime.now() - self.user.date_joined.replace(tzinfo=None)
+        delta_total_seconds = (delta.microseconds + (delta.seconds + delta.days * 24 * 3600) * 10**6) / 10**6
+        return delta_total_seconds / 60.0 / 60 / 24 / 30
 
     def total_hours_in_last_n_days(self, num_days):
         timesheets = self.timesheet_set.filter(day__gt=datetime.date.today() - datetime.timedelta(days=num_days))
