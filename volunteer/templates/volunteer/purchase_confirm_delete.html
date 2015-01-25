@@ -1,12 +1,15 @@
 {% extends 'base/base.html' %}
 {% block title %}Delete Purchase | {{ block.super }}{% endblock title %}
 {% block content %}
-<form id="purchase-delete-form" action="" method="post">{% csrf_token %}
-	<p>Are you sure you want to delete this purchase?</p>
-	<p><span>Description:</span> {{ object.description }}</p>
-	<p><span>Points:</span> {{ object.points }}</p>
-	<p><span>Volunteer:</span> {{ object.volunteer }}</p>
-</form>
-<a href="#" onclick="document.getElementById('purchase-delete-form').submit()">confirm</a> 
-<a href="{% url 'volunteer:purchases' %}">cancel</a>
+    <form id="purchase-delete-form" action="" method="post">{% csrf_token %}
+        <p>Are you sure you want to delete this purchase?</p>
+
+        <p><span>Description:</span> {{ object.description }}</p>
+
+        <p><span>Points:</span> {{ object.points }}</p>
+
+        <p><span>Volunteer:</span> {{ object.volunteer }}</p>
+    </form>
+    <a href="#" onclick="document.getElementById('purchase-delete-form').submit()">confirm</a>
+    <a href="{% url 'volunteer:purchases' %}">cancel</a>
 {% endblock content %}

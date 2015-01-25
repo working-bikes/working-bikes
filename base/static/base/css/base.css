@@ -76,3 +76,9 @@ input, textarea
     padding: 0px;
     margin: 0px;
 }
+
+.approved
+{
+    color: #008800;
+    font-weight: bold;
+}

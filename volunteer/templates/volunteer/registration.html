@@ -1,23 +1,23 @@
 {% extends 'base/base.html' %}
 {% block title %}Register | {{ block.super }}{% endblock title %}
 {% block content %}
-<form id="registration-form" action="" method="post">{% csrf_token %}
-	<table>
-	{{ userform.as_table }}
-    {{ volunteerform.as_table }}
-        <tr>
-            <th></th>
-            <td>
-                I acknowledge that the Organization shall have the license and privilege,
-                without further compensation to the Volunteer, to use the name and likeness of the Volunteer,
-                including photographs and videos of the Volunteer,
-                for the promotion and publicizing of Working Bikes in this and future years.
-            </td>
-        </tr>
-		<tr class="hidden-submit">
-			<td><input type="submit" value="Register" /></td>
-		</tr>
-	</table>
-</form>
-<a href="#" onclick="document.getElementById('registration-form').submit()">register</a>
+    <form id="registration-form" action="" method="post">{% csrf_token %}
+        <table>
+            {{ userform.as_table }}
+            {{ volunteerform.as_table }}
+            <tr>
+                <th></th>
+                <td>
+                    I acknowledge that the Organization shall have the license and privilege,
+                    without further compensation to the Volunteer, to use the name and likeness of the Volunteer,
+                    including photographs and videos of the Volunteer,
+                    for the promotion and publicizing of Working Bikes in this and future years.
+                </td>
+            </tr>
+            <tr class="hidden-submit">
+                <td><input type="submit" value="Register"/></td>
+            </tr>
+        </table>
+    </form>
+    <a href="#" onclick="document.getElementById('registration-form').submit()">register</a>
 {% endblock content %}

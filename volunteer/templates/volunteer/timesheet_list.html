@@ -1,21 +1,21 @@
 {% extends 'base/base.html' %}
 {% block title %}Timesheets | {{ block.super }}{% endblock title %}
 {% block content %}
-	<a href="{% url 'volunteer:profile' %}">profile</a>
-	<a href="{% url 'volunteer:timesheet_add' %}">add timesheet</a>
-	<a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
-	<hr />
-	{% for timesheet in timesheet_list %}
-	<table>
-		<tr id="timesheet-day">
-			<td id="timesheet-day">
-				<a href="{% url 'volunteer:timesheet' timesheet.id %}">{{ timesheet.day }}</a>
-			</td>
-		</tr>
-	</table>
-	<hr />
-	{% endfor %}
-	<a href="{% url 'volunteer:profile' %}">profile</a>
-	<a href="{% url 'volunteer:timesheet_add' %}">add timesheet</a>
-	<a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
+    <a href="{% url 'volunteer:profile' %}">profile</a>
+    <a href="{% url 'volunteer:timesheet_add' %}">add timesheet</a>
+    <a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
+    <hr/>
+    {% for timesheet in timesheet_list %}
+        <table>
+            <tr id="timesheet-day">
+                <td id="timesheet-day">
+                    <a href="{% url 'volunteer:timesheet' timesheet.id %}">{{ timesheet.day }}</a>
+                </td>
+            </tr>
+        </table>
+        <hr/>
+    {% endfor %}
+    <a href="{% url 'volunteer:profile' %}">profile</a>
+    <a href="{% url 'volunteer:timesheet_add' %}">add timesheet</a>
+    <a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
 {% endblock content %}

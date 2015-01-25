@@ -1,37 +1,37 @@
 {% extends 'base/base.html' %}
 {% block title %}Timesheet | {{ block.super }}{% endblock title %}
 {% block content %}
-	<a href="{% url 'volunteer:profile' %}">profile</a>
-	<a href="{% url 'volunteer:timesheets' %}">timesheets</a>
-	<a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
-	<hr />
-	<table>
-		<tr id="timesheet-day">
-			<th><label for="timesheet-day">Day:</label></th>
-			<td id="timesheet-day">{{ timesheet.day }}</td>
-		</tr>
-		<tr id="timesheet-hours">
-			<th><label for="timesheet-hours">Hours:</label></th>
-			<td>{{ timesheet.hours }}</td>
-		</tr>
-		<tr id="timesheet-note">
-			<th><label for="timesheet-note">Notes:</label></th>
-			<td>{{ timesheet.notes }}</td>
-		</tr>
-		<tr id="timesheet-delete">
-			<th><label for="timesheet-delete"></label></th>
-			{% if not timesheet.approved %}
-			<td>
-				<a href="{% url 'volunteer:timesheet_update' timesheet.id %}">update</a>
-				<a href="{% url 'volunteer:timesheet_delete' timesheet.id %}">delete</a>
-			</td>
-			{% else %}
-			<td>Approved</td>
-			{% endif %}
-		</tr>
-	</table>
-	<hr />
-	<a href="{% url 'volunteer:profile' %}">profile</a>
-	<a href="{% url 'volunteer:timesheets' %}">timesheets</a>
-	<a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
+    <a href="{% url 'volunteer:profile' %}">profile</a>
+    <a href="{% url 'volunteer:timesheets' %}">timesheets</a>
+    <a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
+    <hr/>
+    <table>
+        <tr id="timesheet-day">
+            <th><label for="timesheet-day">Day:</label></th>
+            <td id="timesheet-day">{{ timesheet.day }}</td>
+        </tr>
+        <tr id="timesheet-hours">
+            <th><label for="timesheet-hours">Hours:</label></th>
+            <td>{{ timesheet.hours }}</td>
+        </tr>
+        <tr id="timesheet-note">
+            <th><label for="timesheet-note">Notes:</label></th>
+            <td>{{ timesheet.notes }}</td>
+        </tr>
+        <tr id="timesheet-delete">
+            <th><label for="timesheet-delete"></label></th>
+            {% if not timesheet.approved %}
+                <td>
+                    <a href="{% url 'volunteer:timesheet_update' timesheet.id %}">update</a>
+                    <a href="{% url 'volunteer:timesheet_delete' timesheet.id %}">delete</a>
+                </td>
+            {% else %}
+                <td>Approved</td>
+            {% endif %}
+        </tr>
+    </table>
+    <hr/>
+    <a href="{% url 'volunteer:profile' %}">profile</a>
+    <a href="{% url 'volunteer:timesheets' %}">timesheets</a>
+    <a href="{% url 'volunteer:logout' %}?next={% url 'volunteer:login' %}">log out</a>
 {% endblock content %}

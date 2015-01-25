@@ -2,14 +2,14 @@
 {% block title %}Login | {{ block.super }}{% endblock title %}
 
 {% block content %}
-<form action="" id="login-form" method="post">{% csrf_token %}
-	<table>
-		{{ form.as_table }}
-		<tr class="hidden-submit">
-			<td><input type="submit" value="Submit" /></td>
-		</tr>
-	</table>
-</form>
-<a href="#" onclick="document.getElementById('login-form').submit()">login</a>
-<a href="{% url 'volunteer:registration' %}">register</a>
+    <form action="" id="login-form" method="post">{% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr class="hidden-submit">
+                <td><input type="submit" value="Submit"/></td>
+            </tr>
+        </table>
+    </form>
+    <a href="#" onclick="document.getElementById('login-form').submit()">login</a>
+    <a href="{% url 'volunteer:registration' %}">register</a>
 {% endblock content %}

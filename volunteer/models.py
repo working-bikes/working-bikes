@@ -4,7 +4,6 @@ from django.db import models
 from django.db.models import Sum
 from django.contrib.auth.models import User
 
-
 class Task(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
@@ -315,10 +314,10 @@ class Volunteer(models.Model):
 
     def is_member(self):
         if any([
-            self.type in ['Drop-off Site Host', 'Board Member'],
-            self.type == 'Staff' and self.membership_length_months() > 6,
-            self.six_month_avg_hours() >= 4,
-            self.total_hours_in_last_n_days(365) >= 48
+                    self.type in ['Drop-off Site Host', 'Board Member'],
+                    self.type == 'Staff' and self.membership_length_months() > 6,
+                    self.six_month_avg_hours() >= 4,
+                    self.total_hours_in_last_n_days(365) >= 48
         ]):
             return True
         else:
@@ -329,7 +328,7 @@ class Volunteer(models.Model):
 
     def membership_length_months(self):
         delta = datetime.datetime.now() - self.user.date_joined.replace(tzinfo=None)
-        delta_total_seconds = (delta.microseconds + (delta.seconds + delta.days * 24 * 3600) * 10**6) / 10**6
+        delta_total_seconds = (delta.microseconds + (delta.seconds + delta.days * 24 * 3600) * 10 ** 6) / 10 ** 6
         return delta_total_seconds / 60.0 / 60 / 24 / 30
 
     def total_hours_in_last_n_days(self, num_days):
@@ -384,9 +383,29 @@ class TimesheetApproval(models.Model):
 
 class Purchase(models.Model):
     volunteer = models.ForeignKey(Volunteer)
-    date = models.DateField(default=datetime.date.today)
+    date = models.DateTimeField(default=datetime.datetime.now)
     points = models.IntegerField()
     description = models.TextField()
 
     class Meta:
         ordering = ['volunteer__user__first_name']
+
+    def approved(self):
+        try:
+            PurchaseApproval.objects.get(purchase=self)
+            return True
+        except PurchaseApproval.DoesNotExist:
+            return False
+
+    approved.boolean = True
+
+
+class PurchaseApproval(models.Model):
+    purchase = models.OneToOneField(Purchase, unique=True)
+    approved_by = models.ForeignKey(User)
+
+    def __unicode__(self):
+        if self.approved_by.first_name != '' and self.approved_by.last_name != '':
+            return 'Approved by %s %s' % (self.approved_by.first_name, self.approved_by.last_name)
+        else:
+            return 'Approved by %s' % self.approved_by.username
