@@ -7,7 +7,7 @@ site.addsitedir('/var/www/.virtualenvs/wb/local/lib/python2.7/site-packages')
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../")))
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'workingBikes.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'working_bikes.settings'
 
 activate_env=os.path.expanduser("/var/www/.virtualenvs/dhp/bin/activate_this.py")
 execfile(activate_env, dict(__file__=activate_env))
