@@ -16,6 +16,7 @@ class VolunteerAdmin(admin.ModelAdmin):
 
     actions = ('add_event',)
     search_fields = ('user__first_name', 'user__last_name')
+    list_per_page = 25
 
     class AddEventForm(forms.Form):
         _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
