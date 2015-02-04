@@ -15,7 +15,7 @@ class VolunteerAdmin(admin.ModelAdmin):
     list_display = ('name', 'type', 'hours', 'points', 'is_member',)
 
     actions = ('add_event',)
-    search_fields = ('name',)
+    search_fields = ('user__first_name', 'user__last_name')
 
     class AddEventForm(forms.Form):
         _selected_action = forms.CharField(widget=forms.MultipleHiddenInput)
@@ -72,8 +72,8 @@ class TimesheetAdmin(admin.ModelAdmin):
     ]
 
     list_display = ('volunteer', 'day', 'hours', 'notes', 'from_event', 'approved',)
-    list_filter = ('volunteer',)
     actions = ('approve',)
+    search_fields = ('volunteer__user__first_name', 'volunteer__user__last_name',)
 
     def approve(self, request, queryset):
         for timesheet in queryset:
