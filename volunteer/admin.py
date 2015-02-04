@@ -99,6 +99,7 @@ class PurchaseAdmin(admin.ModelAdmin):
     model = Purchase
     list_display = ('description', 'date', 'volunteer', 'points', 'approved',)
     actions = ('approve',)
+    search_fields = ('volunteer__user__first_name', 'volunteer__user__last_name',)
 
     inlines = [
         PurchaseApprovalInline,
