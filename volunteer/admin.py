@@ -97,8 +97,8 @@ class PurchaseApprovalInline(admin.StackedInline):
 
 class PurchaseAdmin(admin.ModelAdmin):
     model = Purchase
-    list_display = ('description', 'volunteer', 'points', 'approved',)
-    list_filter = ('volunteer',)
+    list_display = ('description', 'date', 'volunteer', 'points', 'approved',)
+    list_filter = ('approved',)
     actions = ('approve',)
 
     inlines = [
