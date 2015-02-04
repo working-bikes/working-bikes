@@ -74,6 +74,7 @@ class TimesheetAdmin(admin.ModelAdmin):
     list_display = ('volunteer', 'day', 'hours', 'notes', 'from_event', 'approved',)
     actions = ('approve',)
     search_fields = ('volunteer__user__first_name', 'volunteer__user__last_name',)
+    list_filter = ('day',)
 
     def approve(self, request, queryset):
         for timesheet in queryset:
@@ -100,6 +101,7 @@ class PurchaseAdmin(admin.ModelAdmin):
     list_display = ('description', 'date', 'volunteer', 'points', 'approved',)
     actions = ('approve',)
     search_fields = ('volunteer__user__first_name', 'volunteer__user__last_name',)
+    list_filter = ('date',)
 
     inlines = [
         PurchaseApprovalInline,
