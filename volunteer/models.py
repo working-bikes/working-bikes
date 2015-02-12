@@ -4,10 +4,12 @@ from django.db import models
 from django.db.models import Sum
 from django.contrib.auth.models import User
 
+
 class Task(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField()
     members_only = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.title

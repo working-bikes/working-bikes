@@ -90,7 +90,8 @@ class TimesheetAdmin(admin.ModelAdmin):
 
 class TaskAdmin(admin.ModelAdmin):
     model = Task
-    list_display = ('title', 'description',)
+    list_display = ('title', 'description', 'active')
+    list_editable = ('active',)
 
 
 class PurchaseApprovalInline(admin.StackedInline):

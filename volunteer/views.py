@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.views.generic import TemplateView, DetailView, ListView, CreateView, UpdateView, DeleteView
 
-from volunteer.models import Volunteer, Timesheet, Purchase
+from volunteer.models import Volunteer, Timesheet, Purchase, Task
 from volunteer.forms import UserForm, VolunteerForm, TimesheetCreateForm, PurchaseCreateForm
 
 
@@ -38,8 +38,9 @@ class VolunteerRegistrationView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(VolunteerRegistrationView, self).get_context_data(**kwargs)
+        volunteer_form = VolunteerForm(prefix='volunteer')
         context['userform'] = UserForm(prefix='user')
-        context['volunteerform'] = VolunteerForm(prefix='volunteer')
+        context['volunteerform'] = volunteer_form
         return context
 
 

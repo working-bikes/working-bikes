@@ -2,7 +2,6 @@ import re
 
 from django import forms
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm
 
 from volunteer.models import Volunteer, Timesheet, Purchase, Task
@@ -21,6 +20,10 @@ class UserForm(UserCreationForm):
 
 
 class VolunteerForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(VolunteerForm, self).__init__(*args, **kwargs)
+        self.fields['preferred_tasks'].queryset = Task.objects.filter(active=True)
+
     acknowledged = forms.BooleanField()
     acknowledged.label = 'I Agree'
 
@@ -52,6 +55,10 @@ class HTML5Input(forms.widgets.Input):
 
 
 class TimesheetCreateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(TimesheetCreateForm, self).__init__(*args, **kwargs)
+        self.fields['task'].queryset = Task.objects.filter(active=True)
+
     class Meta:
         model = Timesheet
         exclude = ('volunteer', 'from_event',)
