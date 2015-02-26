@@ -306,13 +306,16 @@ class Volunteer(models.Model):
 
         hour_sum = self.hours()
         purchase_sum = self.purchase_set.aggregate(Sum('points')).get('points__sum', 0)
+        points_award_sum = self.pointsaward_set.aggregate(Sum('points')).get('points__sum', 0)
 
         if purchase_sum is None:
             purchase_sum = 0
         if hour_sum is None:
             hour_sum = 0
+        if points_award_sum is None:
+            points_award_sum = 0
 
-        return int(hour_sum) * 2 - purchase_sum
+        return int(hour_sum) * 2 - purchase_sum + points_award_sum
 
     def is_member(self):
         if any([
@@ -411,3 +414,14 @@ class PurchaseApproval(models.Model):
             return 'Approved by %s %s' % (self.approved_by.first_name, self.approved_by.last_name)
         else:
             return 'Approved by %s' % self.approved_by.username
+
+
+class PointsAward(models.Model):
+    volunteer = models.ForeignKey(Volunteer)
+    points = models.IntegerField()
+    reason = models.TextField(blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    awarded_by = models.ForeignKey(User)
+
+    class Meta:
+        ordering = ['volunteer__user__first_name']

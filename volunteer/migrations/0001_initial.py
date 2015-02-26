@@ -41,7 +41,7 @@ class Migration(SchemaMigration):
             ('volunteer', models.ForeignKey(orm[u'volunteer.volunteer'], null=False)),
             ('volunteertask', models.ForeignKey(orm[u'volunteer.volunteertask'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['volunteer_id', 'volunteertask_id'])
+        db.create_unique(m2m_table_name, ['volunteer_id', 'task_id'])
 
         # Adding model 'Timesheet'
         db.create_table(u'volunteer_timesheet', (
