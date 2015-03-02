@@ -11,7 +11,7 @@ urlpatterns = patterns(
     '',
     url(settings.ADMIN_URL, include(admin.site.urls)),
     url(r'^volunteer/', include('volunteer.urls', namespace='volunteer')),
-	url(r'^$', RedirectView.as_view(url=reverse_lazy('volunteer:index'))),
+    url(r'^$', RedirectView.as_view(url=reverse_lazy('volunteer:index'))),
 )
 
 urlpatterns += staticfiles_urlpatterns()
