@@ -26,8 +26,6 @@ LOGIN_REDIRECT_URL = '/volunteer/profile/'
 LOGIN_URL = '/volunteer/login/'
 LOGOUT_URL = '/volunteer/logout/'
 
-# Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -52,9 +50,6 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'working_bikes.urls'
 
 WSGI_APPLICATION = 'working_bikes.wsgi.application'
-
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 
 DATABASES = {
     'default': {
