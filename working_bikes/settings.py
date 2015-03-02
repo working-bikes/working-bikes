@@ -34,7 +34,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'south',
-    'base',
     'volunteer',
 )
 
@@ -72,3 +71,7 @@ STATIC_URL = os.getenv(PROJECT_VARIABLE_PATTERN.format('STATIC_URL'), '/static/'
 STATIC_ROOT = os.getenv(PROJECT_VARIABLE_PATTERN.format('STATIC_ROOT'), 'static')
 MEDIA_URL = os.getenv(PROJECT_VARIABLE_PATTERN.format('MEDIA_URL'), '/media/')
 MEDIA_ROOT = os.getenv(PROJECT_VARIABLE_PATTERN.format('MEDIA_ROOT'), 'media')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'assets'),
+)
