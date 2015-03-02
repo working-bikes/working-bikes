@@ -19,7 +19,7 @@ MANAGERS = ADMINS
 ADMIN_URL = os.getenv(PROJECT_VARIABLE_PATTERN.format('ADMIN_URL'), 'r^admin/')
 
 TEMPLATE_DIRS = (
-	os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 LOGIN_REDIRECT_URL = '/volunteer/profile/'
@@ -35,9 +35,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'south',
-	'base',
-	'volunteer',
+    'south',
+    'base',
+    'volunteer',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -60,10 +60,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_NAME')),
-		'USER': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_USER')),
-		'PASSWORD': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_PASSWORD')),
-		'HOST': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_HOST'), 'localhost'),
-		'PORT': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_PORT'), 3306),
+        'USER': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_USER')),
+        'PASSWORD': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_PASSWORD')),
+        'HOST': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_HOST'), 'localhost'),
+        'PORT': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_PORT'), 3306),
     }
 }
 
