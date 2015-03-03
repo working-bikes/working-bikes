@@ -11,7 +11,7 @@ class Task(models.Model):
     members_only = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.title
 
 
@@ -350,7 +350,7 @@ class Volunteer(models.Model):
     def name(self):
         return '{0} {1}'.format(self.user.first_name, self.user.last_name)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name()
 
 
@@ -371,7 +371,7 @@ class Timesheet(models.Model):
 
     approved.boolean = True
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.day)
 
 
@@ -379,7 +379,7 @@ class TimesheetApproval(models.Model):
     timesheet = models.OneToOneField(Timesheet, unique=True)
     approved_by = models.ForeignKey(User)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.approved_by.first_name != '' and self.approved_by.last_name != '':
             return 'Approved by %s %s' % (self.approved_by.first_name, self.approved_by.last_name)
         else:
@@ -409,7 +409,7 @@ class PurchaseApproval(models.Model):
     purchase = models.OneToOneField(Purchase, unique=True)
     approved_by = models.ForeignKey(User)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.approved_by.first_name != '' and self.approved_by.last_name != '':
             return 'Approved by %s %s' % (self.approved_by.first_name, self.approved_by.last_name)
         else:
