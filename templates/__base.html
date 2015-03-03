@@ -1,10 +1,11 @@
-{% load static %}
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 	<head>
 		{% block css %}
-		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}/base/css/base.css"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}"/>
 		<link href="http://fonts.googleapis.com/css?family=Karla:400,700" rel="stylesheet" type="text/css">
+        <link rel="icon" href="{% static 'images/favicon.ico' %}"> 
 		{% endblock css %}
 		{% block js %}{% endblock js %}
 		{% block meta %}{% endblock meta %}
@@ -14,7 +15,7 @@
 	<body>
 		<div id="content">
 			<div id="working-bikes-banner">
-				<img id="working-bikes-logo" src="{% get_static_prefix %}base/images/working_bikes_logo.png" alt="Working Bikes Banner" />
+                <img id="working-bikes-logo" src="{% static 'images/working_bikes_logo.png' %}" alt="Working Bikes Banner" />
 			</div>
 		{% block content %}
 		{% endblock content %}
