@@ -43,11 +43,6 @@ class VolunteerForm(forms.ModelForm):
         return '({0}) {1}-{2}'.format(area_code, exchange, subscriber)
 
 
-class TaskForm(forms.ModelForm):
-    class Meta:
-        model = Task
-
-
 class HTML5Input(forms.widgets.Input):
     def __init__(self, type, attrs):
         self.input_type = type
