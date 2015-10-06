@@ -3,11 +3,11 @@ Working Bikes volunteer tracking website
 
 ## Development
 
-### Create the database
-```mysql
-> CREATE DATABASE the_database;
-> CREATE USER the_user IDENTIFIED_BY 'the_password';
-> GRANT ALL PRIVILEGES ON working_bikes.* to 'the_user'@'%';
+### Create the database (MySQL)
+```sql
+CREATE DATABASE the_database;
+CREATE USER the_user IDENTIFIED_BY 'the_password';
+GRANT ALL PRIVILEGES ON working_bikes.* to 'the_user'@'%';
 ```
 
 ### Set up the environment
