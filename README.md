@@ -6,7 +6,7 @@ Working Bikes volunteer tracking website
 ### Create the database (MySQL)
 ```sql
 CREATE DATABASE the_database;
-CREATE USER the_user IDENTIFIED_BY 'the_password';
+CREATE USER the_user IDENTIFIED BY 'the_password';
 GRANT ALL PRIVILEGES ON working_bikes.* to 'the_user'@'%';
 ```
 
