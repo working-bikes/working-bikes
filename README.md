@@ -12,6 +12,7 @@ GRANT ALL PRIVILEGES ON working_bikes.* to 'the_user'@'%';
 
 ### Set up the environment
 ```shell
+# Add to .bashrc or .zshrc or another file that gets sourced at login, for ease
 export WORKING_BIKES_DATABASE_NAME=the_database
 export WORKING_BIKES_DATABASE_USER=the_user
 export WORKING_BIKES_DATABASE_PASSWORD=the_password
@@ -23,7 +24,7 @@ export WORKING_BIKES_DEBUG=TRUE
 ```shell
 $ git clone https://github.com/working-bikes/working-bikes.git
 ```
-### Install its dependencies
+### Install its dependencies (in a Python virtual environment)
 ```shell
 $ cd working-bikes
 $ mkvirtualenv working-bikes
