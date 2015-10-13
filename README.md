@@ -1,4 +1,4 @@
-# Working Bikes
+# Working Bikes [![Build Status](https://travis-ci.org/working-bikes/working-bikes.svg)](https://travis-ci.org/working-bikes/working-bikes)
 Working Bikes volunteer tracking website
 
 ## Development
