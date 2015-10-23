@@ -7,7 +7,7 @@ Working Bikes volunteer tracking website
 ```sql
 CREATE DATABASE the_database;
 CREATE USER the_user IDENTIFIED BY 'the_password';
-GRANT ALL PRIVILEGES ON working_bikes.* to 'the_user'@'%';
+GRANT ALL PRIVILEGES ON the_database.* to 'the_user'@'%';
 ```
 
 ### Set up the environment
