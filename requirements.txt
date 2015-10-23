@@ -4,5 +4,4 @@ gunicorn==19.3.0
 django-nose==1.4.2
 mysqlclient==1.3.6
 six==1.9.0
-
--e git+https://github.com/epantry/django-sql-explorer@474e1695e93e4e868eb34a6cc6c9ae0f5e3aa195#egg=explorer
+django-sql-explorer==0.8.0
