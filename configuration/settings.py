@@ -43,9 +43,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'working_bikes.urls'
-
-WSGI_APPLICATION = 'working_bikes.wsgi.application'
+ROOT_URLCONF = 'configuration.urls'
+WSGI_APPLICATION = 'configuration.wsgi.application'
 
 DATABASES = {
     'default': {
