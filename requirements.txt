@@ -1,4 +1,4 @@
-coverage==4.0.3
+coverage==4.1
 Django==1.9
 gunicorn==19.4.1
 django-nose==1.4.2
