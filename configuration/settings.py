@@ -23,16 +23,24 @@ LOGIN_REDIRECT_URL = '/volunteer/profile/'
 LOGIN_URL = '/volunteer/login/'
 LOGOUT_URL = '/volunteer/logout/'
 
-INSTALLED_APPS = (
+BUILTIN_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+MY_APPS = [
     'volunteer',
+]
+
+THIRD_PARTY_APPS = [
     'explorer',
-)
+]
+
+INSTALLED_APPS = BUILTIN_APPS + THIRD_PARTY_APPS + MY_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
