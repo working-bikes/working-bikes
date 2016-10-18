@@ -72,7 +72,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),
 )
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner' 
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 NOSE_ARGS = [
     '-d',

@@ -68,9 +68,9 @@ class VolunteerAdmin(admin.ModelAdmin):
 
                 count = 0
                 for volunteer in queryset:
-                    timesheet = Timesheet.objects.create(day=day, volunteer=volunteer, hours=hours, notes=notes,
-                                                         from_event=True)
+                    timesheet = Timesheet.objects.create(day=day, volunteer=volunteer, hours=hours, notes=notes, from_event=True)
                     timesheet.save()
+
                     approval = TimesheetApproval.objects.create(timesheet=timesheet, approved_by=request.user)
                     approval.save()
                     count += 1
@@ -79,15 +79,19 @@ class VolunteerAdmin(admin.ModelAdmin):
                 return HttpResponseRedirect(request.get_full_path())
 
         if not form:
-            form = self.AddEventForm(initial={'day': datetime.date.today,
-                                              '_selected_action': request.POST.getlist(admin.ACTION_CHECKBOX_NAME)})
+            form = self.AddEventForm(initial={
+                'day': datetime.date.today,
+                '_selected_action': request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
+            })
 
-        return render_to_response('admin/add_event.html',
-                                  {
-                                  'volunteers': queryset,
-                                  'event_form': form,
-                                  },
-                                  context_instance=RequestContext(request))
+        return render_to_response(
+            'admin/add_event.html',
+            {
+                'volunteers': queryset,
+                'event_form': form,
+            },
+            context_instance=RequestContext(request)
+        )
 
     add_event.short_description = 'Add event for selected volunteers'
 

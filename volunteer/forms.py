@@ -8,6 +8,7 @@ from volunteer.models import Volunteer, Timesheet, Purchase, Task
 
 
 class UserForm(UserCreationForm):
+
     def __init__(self, *args, **kwargs):
         super(UserCreationForm, self).__init__(*args, **kwargs)
         self.fields['email'].required = True
@@ -20,6 +21,7 @@ class UserForm(UserCreationForm):
 
 
 class VolunteerForm(forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(VolunteerForm, self).__init__(*args, **kwargs)
         self.fields['preferred_tasks'].queryset = Task.objects.filter(active=True)
@@ -44,12 +46,14 @@ class VolunteerForm(forms.ModelForm):
 
 
 class HTML5Input(forms.widgets.Input):
+
     def __init__(self, type, attrs):
         self.input_type = type
         super(HTML5Input, self).__init__(attrs)
 
 
 class TimesheetCreateForm(forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(TimesheetCreateForm, self).__init__(*args, **kwargs)
         self.fields['task'].queryset = Task.objects.filter(active=True)
@@ -63,6 +67,7 @@ class TimesheetCreateForm(forms.ModelForm):
 
 
 class PurchaseCreateForm(forms.ModelForm):
+
     class Meta:
         model = Purchase
         exclude = ('volunteer',)
