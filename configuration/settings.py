@@ -1,15 +1,22 @@
 import os
 
+from django.http import Http404
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 PROJECT_NAME = 'WORKING_BIKES'
 PROJECT_VARIABLE_PATTERN = '_'.join((PROJECT_NAME, '{}'))
 
-SECRET_KEY = os.getenv(PROJECT_VARIABLE_PATTERN.format('SECRET_KEY'))
 
-DEBUG = os.getenv(PROJECT_VARIABLE_PATTERN.format('DEBUG'), False) == 'TRUE'
+def get_env_var(var_name, default=None):
+    return os.getenv(PROJECT_VARIABLE_PATTERN.format(var_name), default)
 
-ALLOWED_HOSTS = os.getenv(PROJECT_VARIABLE_PATTERN.format('ALLOWED_HOSTS'), '*').split(',')
+
+SECRET_KEY = get_env_var('SECRET_KEY')
+
+DEBUG = get_env_var('DEBUG', False) == 'TRUE'
+
+ALLOWED_HOSTS = get_env_var('ALLOWED_HOSTS', '*').split(',')
 
 ADMINS = (
     ('Dane Hillard', 'github@danehillard.com'),
@@ -17,7 +24,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-ADMIN_URL = os.getenv(PROJECT_VARIABLE_PATTERN.format('ADMIN_URL'), r'^admin/')
+ADMIN_URL = get_env_var('ADMIN_URL', r'^admin/')
 
 LOGIN_REDIRECT_URL = '/volunteer/profile/'
 LOGIN_URL = '/volunteer/login/'
@@ -51,17 +58,26 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+ROLLBAR = {
+    'access_token': get_env_var('ROLLBAR_ACCESS_TOKEN'),
+    'environment': 'development' if DEBUG else 'production',
+    'root': BASE_DIR,
+    'exception_level_filters': [
+        (Http404, 'ignored'),
+    ]
+}
+
 ROOT_URLCONF = 'configuration.urls'
 WSGI_APPLICATION = 'configuration.wsgi.application'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_NAME')),
-        'USER': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_USER')),
-        'PASSWORD': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_PASSWORD')),
-        'HOST': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_HOST'), 'localhost'),
-        'PORT': os.getenv(PROJECT_VARIABLE_PATTERN.format('DATABASE_PORT'), 3306),
+        'NAME': get_env_var('DATABASE_NAME'),
+        'USER': get_env_var('DATABASE_USER'),
+        'PASSWORD': get_env_var('DATABASE_PASSWORD'),
+        'HOST': get_env_var('DATABASE_HOST', 'localhost'),
+        'PORT': get_env_var('DATABASE_PORT', 3306),
     }
 }
 
@@ -71,10 +87,10 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-STATIC_URL = os.getenv(PROJECT_VARIABLE_PATTERN.format('STATIC_URL'), '/static/')
-STATIC_ROOT = os.getenv(PROJECT_VARIABLE_PATTERN.format('STATIC_ROOT'), 'static')
-MEDIA_URL = os.getenv(PROJECT_VARIABLE_PATTERN.format('MEDIA_URL'), '/media/')
-MEDIA_ROOT = os.getenv(PROJECT_VARIABLE_PATTERN.format('MEDIA_ROOT'), 'media')
+STATIC_URL = get_env_var('STATIC_URL', '/static/')
+STATIC_ROOT = get_env_var('STATIC_ROOT', 'static')
+MEDIA_URL = get_env_var('MEDIA_URL', '/media/')
+MEDIA_ROOT = get_env_var('MEDIA_ROOT', 'media')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),
