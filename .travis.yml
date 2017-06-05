@@ -5,7 +5,7 @@ python:
 script:
   - python manage.py test --noinput
 install:
-  - pip install -r dev-requirements.txt
+  - pip install six && pip install -r dev-requirements.txt
 before_script:
   - mysql -e 'create database working_bikes;'
   - python manage.py migrate
