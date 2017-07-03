@@ -1,5 +1,4 @@
 -r requirements.txt
 
-coala-bears==0.8.4
 coverage==4.2
 django-nose==1.4.2
