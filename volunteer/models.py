@@ -319,10 +319,10 @@ class Volunteer(models.Model):
 
     def is_member(self):
         if any([
-                    self.type in ['Drop-off Site Host', 'Board Member'],
-                    self.type == 'Staff' and self.membership_length_months() > 6,
-                    self.six_month_avg_hours() >= 4,
-                    self.total_hours_in_last_n_days(365) >= 48
+            self.type in ['Drop-off Site Host', 'Board Member'],
+            self.type == 'Staff' and self.membership_length_months() > 6,
+            self.six_month_avg_hours() >= 4,
+            self.total_hours_in_last_n_days(365) >= 48
         ]):
             return True
         else:
