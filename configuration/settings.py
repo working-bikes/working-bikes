@@ -97,18 +97,6 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),
 )
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-NOSE_ARGS = [
-    '-d',
-    '--quiet',
-    '--with-fixture-bundling',
-    '--with-coverage',
-    '--cover-package=.',
-    '--cover-erase',
-    '--cover-branches',
-]
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
