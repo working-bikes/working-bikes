@@ -49,7 +49,7 @@ THIRD_PARTY_APPS = [
 
 INSTALLED_APPS = BUILTIN_APPS + THIRD_PARTY_APPS + MY_APPS
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -57,7 +57,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'rollbar.contrib.django.middleware.RollbarNotifierMiddleware',
-)
+]
 
 ROLLBAR = {
     'access_token': get_env_var('ROLLBAR_ACCESS_TOKEN'),
