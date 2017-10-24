@@ -115,3 +115,6 @@ TEMPLATES = [
         },
     },
 ]
+
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
