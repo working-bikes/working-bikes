@@ -287,7 +287,7 @@ class Volunteer(models.Model):
     country = models.CharField(max_length=50, choices=COUNTRY_CHOICES, default='United States')
     emergency_contact = models.CharField(max_length=50, null=True, blank=True)
     emergency_contact_phone = models.CharField(max_length=15, null=True, blank=True)
-    preferred_tasks = models.ManyToManyField(Task, null=True, blank=True)
+    preferred_tasks = models.ManyToManyField(Task, blank=True)
     skills = models.TextField(null=True, blank=True)
     type = models.CharField(max_length=50, choices=VOLUNTEER_TYPE_CHOICES, default='Volunteer')
 
