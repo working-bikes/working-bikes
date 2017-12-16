@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d26a76323903867e072ba97cef3c4ab446dc6aab902cb2ee5042d531d6625eb6"
+            "sha256": "5f102fed25c20952ca32b30bd7e26aa4578667854ce48bd9cc1f963887d3445c"
         },
         "host-environment-markers": {
             "implementation_name": "cpython",
@@ -49,8 +49,10 @@
             "version": "==2.0"
         },
         "django-sql-explorer": {
-            "editable": true,
-            "path": "../django-sql-explorer"
+            "hashes": [
+                "sha256:1fcc137caac54575ef7ab29464e39f29291e9777380d92dae1b4fd1ce65edec9"
+            ],
+            "version": "==1.1.1"
         },
         "gunicorn": {
             "hashes": [
