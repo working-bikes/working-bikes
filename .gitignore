@@ -9,3 +9,4 @@ media/
 sh.exe.stackdump
 database.db
 .coverage
+.env

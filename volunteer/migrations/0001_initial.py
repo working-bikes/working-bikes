@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('points', models.IntegerField()),
                 ('reason', models.TextField(null=True, blank=True)),
                 ('date', models.DateTimeField(auto_now_add=True)),
-                ('awarded_by', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('awarded_by', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET_NULL)),
             ],
             options={
                 'ordering': ['volunteer__user__first_name'],
@@ -44,8 +44,8 @@ class Migration(migrations.Migration):
             name='PurchaseApproval',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
-                ('approved_by', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
-                ('purchase', models.OneToOneField(to='volunteer.Purchase')),
+                ('approved_by', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET_NULL)),
+                ('purchase', models.OneToOneField(to='volunteer.Purchase', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -72,7 +72,7 @@ class Migration(migrations.Migration):
                 ('hours', models.DecimalField(decimal_places=2, max_digits=5)),
                 ('notes', models.TextField()),
                 ('from_event', models.BooleanField(default=False)),
-                ('task', models.ForeignKey(to='volunteer.Task', null=True, blank=True)),
+                ('task', models.ForeignKey(to='volunteer.Task', null=True, blank=True, on_delete=models.SET_NULL)),
             ],
             options={
             },
@@ -82,8 +82,8 @@ class Migration(migrations.Migration):
             name='TimesheetApproval',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
-                ('approved_by', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
-                ('timesheet', models.OneToOneField(to='volunteer.Timesheet')),
+                ('approved_by', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.SET_NULL)),
+                ('timesheet', models.OneToOneField(to='volunteer.Timesheet', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -104,7 +104,7 @@ class Migration(migrations.Migration):
                 ('skills', models.TextField(null=True, blank=True)),
                 ('type', models.CharField(choices=[('Volunteer', 'Volunteer'), ('Service Hours', 'Service Hours'), ('Staff', 'Staff'), ('Board Member', 'Board Member'), ('Drop-off Site Host', 'Drop-off Site Host')], default='Volunteer', max_length=50)),
                 ('preferred_tasks', models.ManyToManyField(null=True, to='volunteer.Task', blank=True)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ['user__first_name'],
@@ -114,19 +114,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='timesheet',
             name='volunteer',
-            field=models.ForeignKey(to='volunteer.Volunteer'),
+            field=models.ForeignKey(to='volunteer.Volunteer', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='purchase',
             name='volunteer',
-            field=models.ForeignKey(to='volunteer.Volunteer'),
+            field=models.ForeignKey(to='volunteer.Volunteer', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='pointsaward',
             name='volunteer',
-            field=models.ForeignKey(to='volunteer.Volunteer'),
+            field=models.ForeignKey(to='volunteer.Volunteer', on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

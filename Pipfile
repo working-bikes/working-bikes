@@ -1,0 +1,19 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+Django = "==2.0"
+gunicorn = "*"
+mysqlclient = "*"
+rollbar = "*"
+django-sql-explorer = {editable=true, path="../django-sql-explorer"}
+
+
+[dev-packages]
+
+coverage = "*"

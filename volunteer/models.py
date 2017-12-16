@@ -278,7 +278,7 @@ class Volunteer(models.Model):
         ('Drop-off Site Host', 'Drop-off Site Host'),
     )
 
-    user = models.OneToOneField(User, unique=True)
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15)
     street_address = models.CharField(max_length=50)
     city = models.CharField(max_length=50)
@@ -355,11 +355,11 @@ class Volunteer(models.Model):
 
 
 class Timesheet(models.Model):
-    volunteer = models.ForeignKey(Volunteer)
+    volunteer = models.ForeignKey(Volunteer, on_delete=models.CASCADE)
     day = models.DateField(default=datetime.date.today)
     hours = models.DecimalField(max_digits=5, decimal_places=2)
     notes = models.TextField()
-    task = models.ForeignKey(Task, blank=True, null=True)
+    task = models.ForeignKey(Task, blank=True, null=True, on_delete=models.SET_NULL)
     from_event = models.BooleanField(default=False)
 
     def approved(self):
@@ -376,8 +376,8 @@ class Timesheet(models.Model):
 
 
 class TimesheetApproval(models.Model):
-    timesheet = models.OneToOneField(Timesheet, unique=True)
-    approved_by = models.ForeignKey(User)
+    timesheet = models.OneToOneField(Timesheet, unique=True, on_delete=models.CASCADE)
+    approved_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         if self.approved_by.first_name != '' and self.approved_by.last_name != '':
@@ -387,7 +387,7 @@ class TimesheetApproval(models.Model):
 
 
 class Purchase(models.Model):
-    volunteer = models.ForeignKey(Volunteer)
+    volunteer = models.ForeignKey(Volunteer, on_delete=models.CASCADE)
     date = models.DateTimeField(default=datetime.datetime.now)
     points = models.IntegerField()
     description = models.TextField()
@@ -406,8 +406,8 @@ class Purchase(models.Model):
 
 
 class PurchaseApproval(models.Model):
-    purchase = models.OneToOneField(Purchase, unique=True)
-    approved_by = models.ForeignKey(User)
+    purchase = models.OneToOneField(Purchase, unique=True, on_delete=models.CASCADE)
+    approved_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         if self.approved_by.first_name != '' and self.approved_by.last_name != '':
@@ -417,11 +417,11 @@ class PurchaseApproval(models.Model):
 
 
 class PointsAward(models.Model):
-    volunteer = models.ForeignKey(Volunteer)
+    volunteer = models.ForeignKey(Volunteer, on_delete=models.CASCADE)
     points = models.IntegerField()
     reason = models.TextField(blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
-    awarded_by = models.ForeignKey(User)
+    awarded_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         ordering = ['volunteer__user__first_name']
