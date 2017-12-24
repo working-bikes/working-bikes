@@ -1,10 +1,12 @@
 from django.conf.urls import url
 from django.views.generic import RedirectView
-from django.core.urlresolvers import reverse_lazy
 from django.contrib.auth.views import login, logout
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
 
 from volunteer import views
+
+app_name = 'volunteer'
 
 urlpatterns = [
     url(r'^$', RedirectView.as_view(url=reverse_lazy('volunteer:profile')), name='index'),

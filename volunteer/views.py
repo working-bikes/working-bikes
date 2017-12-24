@@ -1,13 +1,11 @@
 from django import forms
-from django.http import Http404
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
 from django.views.generic import TemplateView, DetailView, ListView, CreateView, UpdateView, DeleteView
 
-from volunteer.models import Volunteer, Timesheet, Purchase, Task
+from volunteer.models import Volunteer, Timesheet, Purchase
 from volunteer.forms import UserForm, VolunteerForm, TimesheetCreateForm, PurchaseCreateForm
 
 

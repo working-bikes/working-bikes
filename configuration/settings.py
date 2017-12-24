@@ -24,7 +24,7 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-ADMIN_URL = get_env_var('ADMIN_URL', r'^admin/')
+ADMIN_URL = get_env_var('ADMIN_URL', 'admin/')
 
 LOGIN_REDIRECT_URL = '/volunteer/profile/'
 LOGIN_URL = '/volunteer/login/'
@@ -122,3 +122,6 @@ SESSION_COOKIE_SECURE = not DEBUG
 
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_HSTS_SECONDS = 31536000
+
+EXPLORER_CONNECTIONS = {'Default': 'default'}
+EXPLORER_DEFAULT_CONNECTION = 'default'

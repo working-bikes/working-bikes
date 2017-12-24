@@ -1,13 +1,16 @@
 language: python
+dist: precise
 cache: pip
 python:
   - "3.4"
   - "3.5"
+  - "3.6"
 script:
-  - coverage run --source='.' manage.py test --noinput && coverage report
+  - pipenv run coverage run --source='.' manage.py test --noinput && coverage report
 install:
-  - pip install six && pip install -r dev-requirements.txt
+  - pip install pipenv
+  - pipenv install
 before_script:
   - mysql -e 'create database working_bikes;'
-  - python manage.py migrate
-  - python manage.py collectstatic --noinput
+  - pipenv run python manage.py migrate
+  - pipenv run python manage.py collectstatic --noinput
