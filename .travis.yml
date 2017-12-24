@@ -9,7 +9,7 @@ script:
   - pipenv run coverage run --source='.' manage.py test --noinput && coverage report
 install:
   - pip install pipenv
-  - pipenv install
+  - pipenv install --dev
 before_script:
   - mysql -e 'create database working_bikes;'
   - pipenv run python manage.py migrate
