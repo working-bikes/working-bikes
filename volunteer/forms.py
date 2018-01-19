@@ -24,10 +24,12 @@ class VolunteerForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(VolunteerForm, self).__init__(*args, **kwargs)
-        self.fields['preferred_tasks'].queryset = Task.objects.filter(active=True)
-
-    acknowledged = forms.BooleanField()
-    acknowledged.label = 'I Agree'
+        tasks = Task.objects.filter(active=True)
+        self.fields['preferred_tasks'].queryset = tasks
+        self.fields['preferred_tasks'].widget = forms.CheckboxSelectMultiple(
+            choices=[(task.id, task.title) for task in tasks]
+        )
+        self.fields['preferred_tasks'].label = 'I am interested in'
 
     class Meta:
         model = Volunteer
@@ -35,7 +37,7 @@ class VolunteerForm(forms.ModelForm):
 
     def clean_phone_number(self):
         data = self.cleaned_data['phone_number']
-        pattern = re.compile('^(1)?[\.\ -]?(\d{3})[\.\ -]?(\d{3})[\.\ -]?(\d{4})$')
+        pattern = re.compile('^(1)?[\(\.\ -]?(\d{3})[\)\.\ -]+?(\d{3})[\.\ -]?(\d{4})$')
         match = pattern.search(data)
         if not match:
             raise forms.ValidationError('Please enter a valid 10-digit phone number.')
@@ -60,7 +62,7 @@ class TimesheetCreateForm(forms.ModelForm):
 
     class Meta:
         model = Timesheet
-        exclude = ('volunteer', 'from_event',)
+        exclude = ('volunteer', 'volunteer_type', 'from_event',)
         widgets = {
             'hours': HTML5Input(type='number', attrs={'min': 0.25, 'step': 0.25})
         }

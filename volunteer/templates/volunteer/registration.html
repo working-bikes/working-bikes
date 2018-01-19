@@ -6,7 +6,10 @@
             {{ userform.as_table }}
             {{ volunteerform.as_table }}
             <tr>
-                <th></th>
+                <th>
+                    <label for="id_volunteer-acknowledged" class="sr-only">I Agree:</label>
+                    <input type="checkbox" name="volunteer-acknowledged" id="id_volunteer-acknowledged" required>
+                </th>
                 <td>
                     I acknowledge that the Organization shall have the license and privilege,
                     without further compensation to the Volunteer, to use the name and likeness of the Volunteer,

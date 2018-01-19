@@ -22,12 +22,14 @@ class VolunteerRegistrationView(TemplateView):
             volunteer.user = user
             volunteer.save()
 
-            volunteer = authenticate(username=user_form.cleaned_data['username'],
-                                     password=user_form.cleaned_data['password1'])
+            volunteer = authenticate(
+                username=user_form.cleaned_data['username'],
+                password=user_form.cleaned_data['password1']
+            )
+
             if volunteer is not None:
                 login(request, volunteer)
                 return HttpResponseRedirect(reverse('volunteer:profile'))
-
             else:
                 return HttpResponseRedirect(reverse('volunteer:login'))
 
@@ -42,7 +44,9 @@ class VolunteerRegistrationView(TemplateView):
         return context
 
 
-class VolunteerProfileView(DetailView):
+class VolunteerProfileView(UpdateView):
+    model = Volunteer
+    form_class = VolunteerForm
     template_name = 'volunteer/profile.html'
 
     def get_object(self, *args, **kwargs):
@@ -112,7 +116,11 @@ class TimesheetListView(ListView):
     template_name = 'volunteer/timesheet_list.html'
 
     def get_queryset(self):
-        return Timesheet.objects.filter(volunteer=Volunteer.objects.get(user=self.request.user)).order_by('-day')
+        return (
+            Timesheet.objects
+            .filter(volunteer=Volunteer.objects.get(user=self.request.user))
+            .order_by('-day')
+        )
 
 
 class TimesheetDetailView(DetailView):
@@ -120,8 +128,11 @@ class TimesheetDetailView(DetailView):
     object_name = 'timesheet'
 
     def get_object(self, *args, **kwargs):
-        return get_object_or_404(Timesheet, volunteer=Volunteer.objects.get(user=self.request.user),
-                                 pk=self.kwargs['timesheet_id'])
+        return get_object_or_404(
+            Timesheet,
+            volunteer=Volunteer.objects.get(user=self.request.user),
+            pk=self.kwargs['timesheet_id']
+        )
 
 
 class TimesheetCreateView(CreateView):
@@ -133,14 +144,19 @@ class TimesheetCreateView(CreateView):
         try:
             obj = form.save(commit=False)
             obj.volunteer = Volunteer.objects.get(user=self.request.user)
-            existing_timesheet = Timesheet.objects.get(volunteer=Volunteer.objects.get(user=self.request.user),
-                                                       day=obj.day, from_event=False)
+            existing_timesheet = Timesheet.objects.get(
+                volunteer=Volunteer.objects.get(user=self.request.user),
+                day=obj.day, from_event=False
+            )
             if existing_timesheet.from_event:
                 obj.save()
                 return HttpResponseRedirect(reverse('volunteer:timesheets'))
             else:
-                return render(self.request, self.template_name,
-                              {'form': form, 'timesheet_exists': True, 'existing_timesheet': existing_timesheet})
+                return render(
+                    self.request,
+                    self.template_name,
+                    {'form': form, 'timesheet_exists': True, 'existing_timesheet': existing_timesheet}
+                )
         except Timesheet.DoesNotExist:
             obj.save()
             return HttpResponseRedirect(reverse('volunteer:timesheets'))
