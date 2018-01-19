@@ -22,6 +22,9 @@ class Task(models.Model):
     members_only = models.BooleanField(default=False)
     active = models.BooleanField(default=True)
 
+    class Meta:
+        ordering = ['title']
+
     def __str__(self):
         return self.title
 
