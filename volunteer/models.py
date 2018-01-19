@@ -1,8 +1,19 @@
-import datetime
-
 from django.db import models
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.urls import reverse
+from django.utils import timezone
+
+
+VOLUNTEER_TYPE_CHOICES = (
+    ('Volunteer', 'Volunteer'),
+    ('Service Hours', 'Service Hours'),
+    ('Staff', 'Staff'),
+    ('Board Member', 'Board Member'),
+    ('Drop-off Site Host', 'Drop-off Site Host'),
+)
 
 
 class Task(models.Model):
@@ -270,12 +281,15 @@ class Volunteer(models.Model):
         ('Zimbabwe', 'Zimbabwe'),
     )
 
-    VOLUNTEER_TYPE_CHOICES = (
-        ('Volunteer', 'Volunteer'),
-        ('Service Hours', 'Service Hours'),
-        ('Staff', 'Staff'),
-        ('Board Member', 'Board Member'),
-        ('Drop-off Site Host', 'Drop-off Site Host'),
+    AGE_CHOICES = (
+        ('---', '---'),
+        ('Under 18', 'Under 18'),
+        ('18 - 24', '18 - 24'),
+        ('25 - 34', '25 - 34'),
+        ('35 - 44', '35 - 44'),
+        ('45 - 54', '45 - 54'),
+        ('55 - 64', '55 - 64'),
+        ('65+', '65+'),
     )
 
     user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE)
@@ -290,20 +304,22 @@ class Volunteer(models.Model):
     preferred_tasks = models.ManyToManyField(Task, blank=True)
     skills = models.TextField(null=True, blank=True)
     type = models.CharField(max_length=50, choices=VOLUNTEER_TYPE_CHOICES, default='Volunteer')
+    age_range = models.CharField(max_length=10, choices=AGE_CHOICES, default='---')
 
     class Meta:
         ordering = ['user__first_name']
 
     def hours(self):
-        total_hours = self.timesheet_set.aggregate(Sum('hours')).get('hours__sum', 0.0)
+        total_hours = (
+            self.timesheet_set
+                .filter(~Q(volunteer_type='Service Hours'))
+                .aggregate(Sum('hours')).get('hours__sum', 0.0)
+        )
         if total_hours is None:
             total_hours = 0
         return total_hours
 
     def points(self):
-        if self.type == 'Service Hours':
-            return 0
-
         hour_sum = self.hours()
         purchase_sum = self.purchase_set.aggregate(Sum('points')).get('points__sum', 0)
         points_award_sum = self.pointsaward_set.aggregate(Sum('points')).get('points__sum', 0)
@@ -332,12 +348,12 @@ class Volunteer(models.Model):
     is_member.short_description = 'Member?'
 
     def membership_length_months(self):
-        delta = datetime.datetime.now() - self.user.date_joined.replace(tzinfo=None)
+        delta = timezone.now() - self.user.date_joined.replace(tzinfo=None)
         delta_total_seconds = (delta.microseconds + (delta.seconds + delta.days * 24 * 3600) * 10 ** 6) / 10 ** 6
         return delta_total_seconds / 60.0 / 60 / 24 / 30
 
     def total_hours_in_last_n_days(self, num_days):
-        timesheets = self.timesheet_set.filter(day__gt=datetime.date.today() - datetime.timedelta(days=num_days))
+        timesheets = self.timesheet_set.filter(day__gt=timezone.datetime.today() - timezone.timedelta(days=num_days))
         total = 0
         for timesheet in timesheets:
             if timesheet.approved():
@@ -350,13 +366,17 @@ class Volunteer(models.Model):
     def name(self):
         return '{0} {1}'.format(self.user.first_name, self.user.last_name)
 
+    def get_absolute_url(self):
+        return reverse('volunteer:profile')
+
     def __str__(self):
         return self.name()
 
 
 class Timesheet(models.Model):
     volunteer = models.ForeignKey(Volunteer, on_delete=models.CASCADE)
-    day = models.DateField(default=datetime.date.today)
+    volunteer_type = models.CharField(max_length=50, choices=VOLUNTEER_TYPE_CHOICES, blank=True, null=True)
+    day = models.DateField(default=timezone.now)
     hours = models.DecimalField(max_digits=5, decimal_places=2)
     notes = models.TextField()
     task = models.ForeignKey(Task, blank=True, null=True, on_delete=models.SET_NULL)
@@ -375,6 +395,13 @@ class Timesheet(models.Model):
         return str(self.day)
 
 
+@receiver(post_save, sender=Timesheet)
+def add_volunteer_type(sender, instance, created, *args, **kwargs):
+    if created:
+        instance.volunteer_type = instance.volunteer.type
+        instance.save()
+
+
 class TimesheetApproval(models.Model):
     timesheet = models.OneToOneField(Timesheet, unique=True, on_delete=models.CASCADE)
     approved_by = models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
@@ -388,7 +415,7 @@ class TimesheetApproval(models.Model):
 
 class Purchase(models.Model):
     volunteer = models.ForeignKey(Volunteer, on_delete=models.CASCADE)
-    date = models.DateTimeField(default=datetime.datetime.now)
+    date = models.DateTimeField(default=timezone.now)
     points = models.IntegerField()
     description = models.TextField()
 

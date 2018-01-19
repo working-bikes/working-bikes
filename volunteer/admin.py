@@ -5,7 +5,7 @@ from django.contrib import admin
 from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 
 from volunteer.models import Volunteer, Timesheet, TimesheetApproval, Task, Purchase, PurchaseApproval, PointsAward
 
@@ -84,13 +84,13 @@ class VolunteerAdmin(admin.ModelAdmin):
                 '_selected_action': request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
             })
 
-        return render_to_response(
+        return render(
+            request,
             'admin/add_event.html',
             {
                 'volunteers': queryset,
                 'event_form': form,
             },
-            context_instance=RequestContext(request)
         )
 
     add_event.short_description = 'Add event for selected volunteers'
@@ -111,6 +111,7 @@ class TimesheetAdmin(admin.ModelAdmin):
     actions = ('approve',)
     search_fields = ('volunteer__user__first_name', 'volunteer__user__last_name',)
     list_filter = ('day',)
+    readonly_fields = ('volunteer_type',)
 
     def approve(self, request, queryset):
         for timesheet in queryset:
@@ -160,6 +161,7 @@ class PointsAwardAdmin(NiceUserModelAdmin):
     list_display = ('volunteer', 'points', 'reason', 'awarded_by', 'date')
     search_fields = ('volunteer__user__first_name', 'volunteer__user__last_name',)
     list_filter = ('date',)
+
 
 admin.site.register(Volunteer, VolunteerAdmin)
 admin.site.register(Timesheet, TimesheetAdmin)

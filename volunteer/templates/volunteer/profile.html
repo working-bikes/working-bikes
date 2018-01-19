@@ -1,23 +1,12 @@
 {% extends '__base.html' %}
 {% block title %}{{ user.first_name }} | {{ block.super }}{% endblock title %}
 {% block content %}
+    {% if form.has_errors %}
+        {{ form.errors }}
+    {% endif %}
+    <form method="post" action="{% url 'volunteer:profile' %}">{% csrf_token %}
     <table id="volunteer-info">
-        <tr id="volunteer-name">
-            <th><label for="user-name">Name:</label></th>
-            <td id="user-name">{{ user.first_name }} {{ user.last_name }}</td>
-        </tr>
-        <tr id="volunteer-street-address">
-            <th><label for="user-street-address">Address:</label></th>
-            <td id="user-street-address">{{ volunteer.street_address }}</td>
-        </tr>
-        <tr>
-            <th><label for="user-locale"></label></th>
-            <td id="user-locale">{{ volunteer.city }}, {{ volunteer.state }} {{ volunteer.zip_code }}</td>
-        </tr>
-        <tr>
-            <th><label for="user-phone">Phone:</label></th>
-            <td id="user-phone">{{ volunteer.phone_number }}</td>
-        </tr>
+    {{ form.as_table }}
         <tr>
             <th><label for="user-total-hours">Total Hours:</label></th>
             <td id="user-total-hours">{{ volunteer.hours }}</td>
@@ -28,7 +17,12 @@
                 <td id="user-points">{{ volunteer.points }}</td>
             </tr>
         {% endif %}
+        <tr>
+            <th></th>
+            <td><button type="submit" value="Submit">Submit</button></td>
+        </tr>
     </table>
+    </form>
     <hr/>
     <a href="{% url 'volunteer:timesheets' %}">timesheets</a>
     <a href="{% url 'volunteer:purchases' %}">purchases</a>
