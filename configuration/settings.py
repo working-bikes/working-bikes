@@ -1,8 +1,16 @@
+import logging
 import os
 
 from django.http import Http404
+from django.utils.log import DEFAULT_LOGGING
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+
+ENVIRONMENT = os.getenv('STAGE', 'dev')
+IS_DEVELOPMENT = ENVIRONMENT == 'dev'
+IS_STAGING = ENVIRONMENT == 'staging'
+IS_PRODUCTION = ENVIRONMENT == 'production'
+IS_CI = os.getenv('CI', False) == 'true'
 
 PROJECT_NAME = 'WORKING_BIKES'
 PROJECT_VARIABLE_PATTERN = '_'.join((PROJECT_NAME, '{}'))
@@ -45,6 +53,7 @@ MY_APPS = [
 
 THIRD_PARTY_APPS = [
     'explorer',
+    'webpack_loader',
 ]
 
 INSTALLED_APPS = BUILTIN_APPS + THIRD_PARTY_APPS + MY_APPS
@@ -62,7 +71,7 @@ MIDDLEWARE = [
 
 ROLLBAR = {
     'access_token': get_env_var('ROLLBAR_ACCESS_TOKEN'),
-    'environment': 'development' if DEBUG else 'production',
+    'environment': ENVIRONMENT,
     'root': BASE_DIR,
     'exception_level_filters': [
         (Http404, 'ignored'),
@@ -88,11 +97,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
-STATIC_URL = get_env_var('STATIC_URL', '/static/')
-STATIC_ROOT = get_env_var('STATIC_ROOT', 'static')
-MEDIA_URL = get_env_var('MEDIA_URL', '/media/')
-MEDIA_ROOT = get_env_var('MEDIA_ROOT', 'media')
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assets'),
@@ -125,3 +129,70 @@ SECURE_HSTS_SECONDS = 31536000
 
 EXPLORER_CONNECTIONS = {'Default': 'default'}
 EXPLORER_DEFAULT_CONNECTION = 'default'
+
+LOGGING_CONFIG = None
+LOG_LEVEL = os.getenv('LOG_LEVEL', 'INFO')
+LOGGERS = {
+    '': {
+        'level': 'WARNING',
+        'handlers': ['console'],
+    },
+    'django.server': DEFAULT_LOGGING['loggers']['django.server']
+}
+LOGGERS.update({
+    app: {
+        'level': LOG_LEVEL,
+        'handlers': ['console'],
+        'propagate': False,
+    } for app in MY_APPS
+})
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '%(asctime)s | %(levelname)-8s | %(name)s | %(message)s',
+        },
+        'django.server': DEFAULT_LOGGING['formatters']['django.server']
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+        'django.server': DEFAULT_LOGGING['handlers']['django.server']
+    },
+    'loggers': LOGGERS,
+})
+
+if IS_PRODUCTION or IS_STAGING:
+    STATICFILES_STORAGE = 'configuration.storages.StaticStorage'
+    DEFAULT_FILE_STORAGE = 'configuration.storages.MediaStorage'
+else:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+BUCKET_PREFIX = os.getenv('BUCKET_PREFIX')
+
+MEDIA_BUCKET_NAME = f'{BUCKET_PREFIX}-media-{ENVIRONMENT}'
+MEDIA_DOMAIN = f'media-{ENVIRONMENT}.workingbikes.org'
+MEDIA_URL = '/media/' if DEBUG else f'https://{MEDIA_DOMAIN}/'
+
+STATIC_BUCKET_NAME = f'{BUCKET_PREFIX}-static-{ENVIRONMENT}'
+STATIC_DOMAIN = f'static-{ENVIRONMENT}.workingbikes.org'
+STATIC_URL = '/static/' if DEBUG else f'https://{STATIC_DOMAIN}/'
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_IS_GZIPPED = True
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'dist/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}

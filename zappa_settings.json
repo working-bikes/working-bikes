@@ -1,0 +1,22 @@
+{
+    "staging": {
+        "aws_region": "us-east-1",
+        "django_settings": "configuration.settings",
+        "profile_name": "workingbikes",
+        "project_name": "workingbikes",
+        "runtime": "python3.6",
+        "s3_bucket": "working-bikes",
+        "domain": "volunteer-staging.workingbikes.org",
+        "exclude": ["node_modules", ".idea", "media"]
+    },
+    "production": {
+        "aws_region": "us-east-1",
+        "django_settings": "configuration.settings",
+        "profile_name": "workingbikes",
+        "project_name": "workingbikes",
+        "runtime": "python3.6",
+        "s3_bucket": "working-bikes",
+        "domain": "volunteer.workingbikes.org",
+        "exclude": ["node_modules", ".idea", "media"]
+    }
+}

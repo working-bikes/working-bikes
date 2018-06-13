@@ -1,9 +1,10 @@
 {% load staticfiles %}
+{% load webpack_loader %}
 <!DOCTYPE html>
 <html>
     <head>
         {% block css %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}"/>
+        {% render_bundle 'main' 'css' %}
         <link href="//fonts.googleapis.com/css?family=Karla:400,700" rel="stylesheet" type="text/css">
         <link rel="icon" href="{% static 'images/favicon.ico' %}">
         {% endblock css %}

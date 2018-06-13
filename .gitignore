@@ -10,3 +10,6 @@ sh.exe.stackdump
 database.db
 .coverage
 .env
+node_modules/
+assets/dist/
+webpack-stats.json
