@@ -6,7 +6,7 @@
         "project_name": "workingbikes",
         "runtime": "python3.6",
         "s3_bucket": "working-bikes",
-        "domain": "volunteer-staging.workingbikes.org",
+        "domain": "staging.volunteer.workingbikes.org",
         "exclude": ["node_modules", ".idea", "media"]
     },
     "production": {
