@@ -22,7 +22,7 @@ def get_env_var(var_name, default=None):
 
 SECRET_KEY = get_env_var('SECRET_KEY')
 
-DEBUG = get_env_var('DEBUG', False) == 'TRUE'
+DEBUG = IS_DEVELOPMENT or IS_CI
 
 ALLOWED_HOSTS = get_env_var('ALLOWED_HOSTS', '*').split(',')
 

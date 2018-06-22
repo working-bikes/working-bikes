@@ -351,7 +351,7 @@ class Volunteer(models.Model):
     is_member.short_description = 'Member?'
 
     def membership_length_months(self):
-        delta = timezone.now() - self.user.date_joined.replace(tzinfo=None)
+        delta = timezone.now() - self.user.date_joined.replace()
         delta_total_seconds = (delta.microseconds + (delta.seconds + delta.days * 24 * 3600) * 10 ** 6) / 10 ** 6
         return delta_total_seconds / 60.0 / 60 / 24 / 30
 
