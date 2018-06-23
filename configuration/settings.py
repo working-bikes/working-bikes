@@ -174,11 +174,11 @@ else:
 BUCKET_PREFIX = os.getenv('BUCKET_PREFIX')
 
 MEDIA_BUCKET_NAME = f'{BUCKET_PREFIX}-media-{ENVIRONMENT}'
-MEDIA_DOMAIN = f'media-{ENVIRONMENT}.workingbikes.org'
+MEDIA_DOMAIN = f'media-{ENVIRONMENT}.volunteer.workingbikes.org'
 MEDIA_URL = '/media/' if DEBUG else f'https://{MEDIA_DOMAIN}/'
 
 STATIC_BUCKET_NAME = f'{BUCKET_PREFIX}-static-{ENVIRONMENT}'
-STATIC_DOMAIN = f'static-{ENVIRONMENT}.workingbikes.org'
+STATIC_DOMAIN = f'static-{ENVIRONMENT}.volunteer.workingbikes.org'
 STATIC_URL = '/static/' if DEBUG else f'https://{STATIC_DOMAIN}/'
 
 AWS_S3_OBJECT_PARAMETERS = {
