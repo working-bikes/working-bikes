@@ -6,7 +6,7 @@ name = "pypi"
 
 [requires]
 
-python_full_version = "3.5.0"
+python_version = "3.6"
 
 [packages]
 
@@ -15,6 +15,9 @@ gunicorn = "*"
 mysqlclient = "*"
 rollbar = "*"
 django-sql-explorer = "*"
+zappa = "*"
+django-storages = "*"
+django-webpack-loader = "*"
 
 
 [dev-packages]
