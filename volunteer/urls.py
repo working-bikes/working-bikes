@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from django.views.generic import RedirectView
-from django.contrib.auth.views import login, logout
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 
@@ -21,6 +21,6 @@ urlpatterns = [
     url(r'^timesheets/delete/(?P<timesheet_id>[\d]+)/$', login_required(views.TimesheetDeleteView.as_view()), name='timesheet_delete'),
     url(r'^timesheets/(?P<timesheet_id>[\d]+)/$', login_required(views.TimesheetDetailView.as_view()), name='timesheet'),
     url(r'^timesheets/update/(?P<timesheet_id>[\d]+)/$', login_required(views.TimesheetUpdateView.as_view()), name='timesheet_update'),
-    url(r'^login/$', login, {'template_name': 'volunteer/login.html'}, name='login'),
-    url(r'^logout/$', logout, name='logout'),
+    url(r'^login/$', LoginView.as_view(template_name='volunteer/login.html'), name='login'),
+    url(r'^logout/$', LogoutView.as_view(), name='logout'),
 ]
