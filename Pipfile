@@ -7,7 +7,7 @@ name = "pypi"
 python_version = "3.6"
 
 [packages]
-Django = "==1.11.8"
+Django = "==2.1"
 gunicorn = "*"
 rollbar = "*"
 django-sql-explorer = "*"
