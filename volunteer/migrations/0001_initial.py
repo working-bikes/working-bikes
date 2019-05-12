@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import datetime
+
+import django
+import pytz
 from django.db import models, migrations
 from django.conf import settings
-import datetime
 
 
 class Migration(migrations.Migration):
@@ -31,7 +34,7 @@ class Migration(migrations.Migration):
             name='Purchase',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
-                ('date', models.DateTimeField(default=datetime.datetime.now)),
+                ('date', models.DateTimeField(default=django.utils.timezone.now)),
                 ('points', models.IntegerField()),
                 ('description', models.TextField()),
             ],
