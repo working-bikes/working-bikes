@@ -1,18 +1,23 @@
-language: python
-python:
-  - "3.6"
-services:
-  - mysql
-env:
-  - PIPENV_IGNORE_VIRTUALENVS=1
-script:
-  - pipenv run pytest --cov
-install:
-  - pip install pipenv
-  - pipenv install --dev
-before_script:
-  - mysql -e 'create database working_bikes;'
-  - pipenv run python manage.py migrate
-  - pipenv run python manage.py collectstatic --noinput
 notifications:
     email: false
+
+language: python
+cache: pip
+python:
+  - "3.6"
+
+services:
+  - mysql
+
+install:
+  - pip install poetry
+  - poetry install
+
+jobs:
+  include:
+    - stage: test
+      script:
+        - mysql -e 'create database working_bikes;'
+        - poetry run python manage.py migrate
+        - poetry run python manage.py collectstatic --noinput
+        - poetry run pytest --cov

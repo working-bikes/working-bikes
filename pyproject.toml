@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "working-bikes"
+description = "Working Bikes volunteer site"
+version = "1.0.0"
+authors = ["daneah <github@danehillard.com"]
+
+[tool.poetry.dependencies]
+python = "^3.6.0"
+Django = "~=2.1.15"
+gunicorn = "*"
+rollbar = "*"
+django-sql-explorer = "*"
+zappa = "*"
+django-storages = "*"
+django-webpack-loader = "*"
+mysqlclient = "*"
+
+[tool.poetry.dev-dependencies]
+coverage = {version="*", extras=["toml"]}
+pytest = "*"
+pytest-cov = "*"
+pytest-django = "*"
+
+[tool.coverage.run]
+source = [
+    ".",
+]
+omit = [
+    "*/__init__.py",
+    "*/migrations/*",
+    "*/tests/*",
+    "*/test_*",
+    "manage.py",
+    "configuration/*",
+    "*/admin.py",
+    "*/apps.py",
+    "*/urls.py",
+    "sitemaps.py",
+]
+
+branch = true
+
+[tool.coverage.report]
+precision = 2
+show_missing = true
+skip_covered = true

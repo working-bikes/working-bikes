@@ -13,3 +13,5 @@ database.db
 node_modules/
 assets/dist/
 webpack-stats.json
+.envrc
+.python-version
