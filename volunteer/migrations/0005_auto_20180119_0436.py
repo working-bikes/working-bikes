@@ -8,12 +8,9 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('volunteer', '0004_auto_20180119_0400'),
+        ("volunteer", "0004_auto_20180119_0400"),
     ]
 
     operations = [
-        migrations.AlterModelOptions(
-            name='task',
-            options={'ordering': ['title']},
-        ),
+        migrations.AlterModelOptions(name="task", options={"ordering": ["title"]},),
     ]

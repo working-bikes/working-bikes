@@ -20,6 +20,12 @@ coverage = {version="*", extras=["toml"]}
 pytest = "*"
 pytest-cov = "*"
 pytest-django = "*"
+black = "^19.10b0"
+flake8 = "^3.7.9"
+
+[tool.black]
+line_length = 120
+target-version = ["py36", "py37", "py38"]
 
 [tool.coverage.run]
 source = [

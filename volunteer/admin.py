@@ -2,10 +2,9 @@ import datetime
 
 from django import forms
 from django.contrib import admin
-from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render
 
 from volunteer.models import Volunteer, Timesheet, TimesheetApproval, Task, Purchase, PurchaseApproval, PointsAward
 
@@ -15,18 +14,17 @@ class NiceUserModelAdmin(admin.ModelAdmin):
     In addition to showing a user's username in related fields, show their full
     name too (if they have one and it differs from the username).
     """
+
     always_show_username = True
 
     def formfield_for_foreignkey(self, db_field, request=None, **kwargs):
-        field = super(NiceUserModelAdmin, self).formfield_for_foreignkey(
-                                                db_field, request, **kwargs)
+        field = super(NiceUserModelAdmin, self).formfield_for_foreignkey(db_field, request, **kwargs)
         if db_field.rel.to == User:
             field.label_from_instance = self.get_user_label
         return field
 
     def formfield_for_manytomany(self, db_field, request=None, **kwargs):
-        field = super(NiceUserModelAdmin, self).formfield_for_manytomany(
-                                                db_field, request, **kwargs)
+        field = super(NiceUserModelAdmin, self).formfield_for_manytomany(db_field, request, **kwargs)
         if db_field.rel.to == User:
             field.label_from_instance = self.get_user_label
         return field
@@ -36,17 +34,22 @@ class NiceUserModelAdmin(admin.ModelAdmin):
         username = user.username
         if not self.always_show_username:
             return name or username
-        return (name and name != username and '%s (%s)' % (name, username)
-                or username)
+        return name and name != username and "%s (%s)" % (name, username) or username
 
 
 class VolunteerAdmin(admin.ModelAdmin):
     model = Volunteer
 
-    list_display = ('name', 'type', 'hours', 'points', 'is_member',)
+    list_display = (
+        "name",
+        "type",
+        "hours",
+        "points",
+        "is_member",
+    )
 
-    actions = ('add_event',)
-    search_fields = ('user__first_name', 'user__last_name')
+    actions = ("add_event",)
+    search_fields = ("user__first_name", "user__last_name")
     list_per_page = 25
 
     class AddEventForm(forms.Form):
@@ -58,42 +61,39 @@ class VolunteerAdmin(admin.ModelAdmin):
     def add_event(self, request, queryset):
         form = None
 
-        if 'apply' in request.POST:
+        if "apply" in request.POST:
             form = self.AddEventForm(request.POST)
 
             if form.is_valid():
-                day = form.cleaned_data['day']
-                hours = form.cleaned_data['hours']
-                notes = form.cleaned_data['notes']
+                day = form.cleaned_data["day"]
+                hours = form.cleaned_data["hours"]
+                notes = form.cleaned_data["notes"]
 
                 count = 0
                 for volunteer in queryset:
-                    timesheet = Timesheet.objects.create(day=day, volunteer=volunteer, hours=hours, notes=notes, from_event=True)
+                    timesheet = Timesheet.objects.create(
+                        day=day, volunteer=volunteer, hours=hours, notes=notes, from_event=True
+                    )
                     timesheet.save()
 
                     approval = TimesheetApproval.objects.create(timesheet=timesheet, approved_by=request.user)
                     approval.save()
                     count += 1
 
-                self.message_user(request, 'Successfully added event for {count} volunteer(s).'.format(**locals()))
+                self.message_user(request, "Successfully added event for {count} volunteer(s).".format(**locals()))
                 return HttpResponseRedirect(request.get_full_path())
 
         if not form:
-            form = self.AddEventForm(initial={
-                'day': datetime.date.today,
-                '_selected_action': request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
-            })
+            form = self.AddEventForm(
+                initial={
+                    "day": datetime.date.today,
+                    "_selected_action": request.POST.getlist(admin.ACTION_CHECKBOX_NAME),
+                }
+            )
 
-        return render(
-            request,
-            'admin/add_event.html',
-            {
-                'volunteers': queryset,
-                'event_form': form,
-            },
-        )
+        return render(request, "admin/add_event.html", {"volunteers": queryset, "event_form": form,},)
 
-    add_event.short_description = 'Add event for selected volunteers'
+    add_event.short_description = "Add event for selected volunteers"
 
 
 class TimesheetApprovalInline(admin.StackedInline):
@@ -107,11 +107,21 @@ class TimesheetAdmin(admin.ModelAdmin):
         TimesheetApprovalInline,
     ]
 
-    list_display = ('volunteer', 'day', 'hours', 'notes', 'from_event', 'approved',)
-    actions = ('approve',)
-    search_fields = ('volunteer__user__first_name', 'volunteer__user__last_name',)
-    list_filter = ('day',)
-    readonly_fields = ('volunteer_type',)
+    list_display = (
+        "volunteer",
+        "day",
+        "hours",
+        "notes",
+        "from_event",
+        "approved",
+    )
+    actions = ("approve",)
+    search_fields = (
+        "volunteer__user__first_name",
+        "volunteer__user__last_name",
+    )
+    list_filter = ("day",)
+    readonly_fields = ("volunteer_type",)
 
     def approve(self, request, queryset):
         for timesheet in queryset:
@@ -121,13 +131,13 @@ class TimesheetAdmin(admin.ModelAdmin):
                 approval = TimesheetApproval.objects.create(timesheet=timesheet, approved_by=request.user)
                 approval.save()
 
-    approve.short_description = 'Approve selected timesheets'
+    approve.short_description = "Approve selected timesheets"
 
 
 class TaskAdmin(admin.ModelAdmin):
     model = Task
-    list_display = ('title', 'description', 'active')
-    list_editable = ('active',)
+    list_display = ("title", "description", "active")
+    list_editable = ("active",)
 
 
 class PurchaseApprovalInline(admin.StackedInline):
@@ -136,10 +146,19 @@ class PurchaseApprovalInline(admin.StackedInline):
 
 class PurchaseAdmin(admin.ModelAdmin):
     model = Purchase
-    list_display = ('description', 'date', 'volunteer', 'points', 'approved',)
-    actions = ('approve',)
-    search_fields = ('volunteer__user__first_name', 'volunteer__user__last_name',)
-    list_filter = ('date',)
+    list_display = (
+        "description",
+        "date",
+        "volunteer",
+        "points",
+        "approved",
+    )
+    actions = ("approve",)
+    search_fields = (
+        "volunteer__user__first_name",
+        "volunteer__user__last_name",
+    )
+    list_filter = ("date",)
 
     inlines = [
         PurchaseApprovalInline,
@@ -153,14 +172,17 @@ class PurchaseAdmin(admin.ModelAdmin):
                 approval = PurchaseApproval.objects.create(purchase=purchase, approved_by=request.user)
                 approval.save()
 
-    approve.short_description = 'Approve selected purchases'
+    approve.short_description = "Approve selected purchases"
 
 
 class PointsAwardAdmin(NiceUserModelAdmin):
     model = PointsAward
-    list_display = ('volunteer', 'points', 'reason', 'awarded_by', 'date')
-    search_fields = ('volunteer__user__first_name', 'volunteer__user__last_name',)
-    list_filter = ('date',)
+    list_display = ("volunteer", "points", "reason", "awarded_by", "date")
+    search_fields = (
+        "volunteer__user__first_name",
+        "volunteer__user__last_name",
+    )
+    list_filter = ("date",)
 
 
 admin.site.register(Volunteer, VolunteerAdmin)

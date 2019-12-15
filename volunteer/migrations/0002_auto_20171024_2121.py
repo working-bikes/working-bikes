@@ -8,13 +8,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('volunteer', '0001_initial'),
+        ("volunteer", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='volunteer',
-            name='preferred_tasks',
-            field=models.ManyToManyField(blank=True, to='volunteer.Task'),
+            model_name="volunteer",
+            name="preferred_tasks",
+            field=models.ManyToManyField(blank=True, to="volunteer.Task"),
         ),
     ]

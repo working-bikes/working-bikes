@@ -9,28 +9,48 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('volunteer', '0003_auto_20171224_0424'),
+        ("volunteer", "0003_auto_20171224_0424"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='timesheet',
-            name='volunteer_type',
-            field=models.CharField(blank=True, choices=[('Volunteer', 'Volunteer'), ('Service Hours', 'Service Hours'), ('Staff', 'Staff'), ('Board Member', 'Board Member'), ('Drop-off Site Host', 'Drop-off Site Host')], max_length=50, null=True),
+            model_name="timesheet",
+            name="volunteer_type",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("Volunteer", "Volunteer"),
+                    ("Service Hours", "Service Hours"),
+                    ("Staff", "Staff"),
+                    ("Board Member", "Board Member"),
+                    ("Drop-off Site Host", "Drop-off Site Host"),
+                ],
+                max_length=50,
+                null=True,
+            ),
         ),
         migrations.AddField(
-            model_name='volunteer',
-            name='age_range',
-            field=models.CharField(choices=[('---', '---'), ('Under 18', 'Under 18'), ('18 - 24', '18 - 24'), ('25 - 34', '25 - 34'), ('35 - 44', '35 - 44'), ('45 - 54', '45 - 54'), ('55 - 64', '55 - 64'), ('65+', '65+')], default='---', max_length=10),
+            model_name="volunteer",
+            name="age_range",
+            field=models.CharField(
+                choices=[
+                    ("---", "---"),
+                    ("Under 18", "Under 18"),
+                    ("18 - 24", "18 - 24"),
+                    ("25 - 34", "25 - 34"),
+                    ("35 - 44", "35 - 44"),
+                    ("45 - 54", "45 - 54"),
+                    ("55 - 64", "55 - 64"),
+                    ("65+", "65+"),
+                ],
+                default="---",
+                max_length=10,
+            ),
         ),
         migrations.AlterField(
-            model_name='purchase',
-            name='date',
-            field=models.DateTimeField(default=django.utils.timezone.now),
+            model_name="purchase", name="date", field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AlterField(
-            model_name='timesheet',
-            name='day',
-            field=models.DateField(default=django.utils.timezone.now),
+            model_name="timesheet", name="day", field=models.DateField(default=django.utils.timezone.now),
         ),
     ]

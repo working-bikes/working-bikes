@@ -15,6 +15,10 @@ install:
 
 jobs:
   include:
+    - stage: lint
+      script:
+        - poetry run black --check .
+        - poetry run flake8 .
     - stage: test
       script:
         - mysql -e 'create database working_bikes;'
