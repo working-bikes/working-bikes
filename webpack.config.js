@@ -1,10 +1,21 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const BundleTracker = require('webpack-bundle-tracker');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCssPlugin = require('optimize-css-assets-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     context: __dirname,
+    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+    optimization: {
+        minimize: process.env.NODE_ENV === 'production',
+        minimizer: [
+            new TerserPlugin({
+                test: /\.js($|\?)/i
+            }),
+            new OptimizeCssPlugin(),
+        ],
+    },
     entry: {
         main: path.resolve('assets', 'js', 'index.js')
     },
@@ -22,10 +33,13 @@ module.exports = {
             },
             {
                 test: /\.s?css$/,
-                use: ExtractTextPlugin.extract({
-                    use: ['css-loader', 'sass-loader'],
-                    fallback: 'style-loader'
-                })
+                use: [
+                    {
+                        loader: MiniCssExtractPlugin.loader,
+                    },
+                    'css-loader',
+                    'sass-loader',
+                ],
             },
             {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf)$/,
@@ -38,14 +52,7 @@ module.exports = {
         ]
     },
     plugins: [
-        new UglifyJsPlugin({
-            test: /\.js($|\?)/i,
-            sourceMap: true,
-            uglifyOptions: {
-                warnings: false
-            }
-        }),
-        new ExtractTextPlugin('[name]-[hash:6].css'),
+        new MiniCssExtractPlugin('[name]-[hash:6].css'),
         new BundleTracker({filename: './webpack-stats.json'})
     ]
 };
